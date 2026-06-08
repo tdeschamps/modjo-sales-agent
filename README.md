@@ -6,6 +6,41 @@ Your Modjo data, automated. 19 skills covering the rep's daily rhythm, per-deal 
 
 The Modjo Sales Agent turns your Modjo conversation intelligence into automated sales workflows. Every skill is built around a sales job-to-be-done and uses your Modjo calls, deals, accounts, contacts, emails, and AI agents directly. No re-typing, no copy-paste, no asking "what did this rep say on the last call?" — the agent reads it and acts on it.
 
+## Quick install
+
+This repo is a self-contained Claude Code plugin **and** marketplace. Install in two commands from inside Claude Code:
+
+```text
+/plugin marketplace add tdeschamps/modjo-sales-agent
+/plugin install modjo-sales-agent
+```
+
+Then reload and try a skill:
+
+```text
+/reload-plugins
+/modjo-sales-agent:start-day
+```
+
+> Plugin skills are namespaced — every command is `/modjo-sales-agent:<command>` (e.g. `/modjo-sales-agent:audit-deal Acme`). This prevents conflicts with other plugins.
+
+### Other ways to install
+
+| Method | Command | When to use |
+|---|---|---|
+| **Marketplace** (recommended) | `/plugin marketplace add tdeschamps/modjo-sales-agent` → `/plugin install modjo-sales-agent` | Normal install + easy updates |
+| **Try without installing** | `claude --plugin-dir /path/to/modjo-sales-agent` | Kick the tires locally first |
+| **Clone then load** | `git clone https://github.com/tdeschamps/modjo-sales-agent && claude --plugin-dir ./modjo-sales-agent` | Local dev / customizing skills |
+
+### Update / uninstall
+
+```text
+/plugin marketplace update modjo-sales-agent     # pull the latest version
+/plugin uninstall modjo-sales-agent
+```
+
+**Prerequisite:** the [Modjo MCP](CONNECTORS.md) connected in your host for the full experience. Not on Modjo yet? Every skill also runs in CSV / paste-in mode — see `shared/csv-schemas.md`. Next step after install: the [Setup](#setup) section below.
+
 ## How it works
 
 Three layers, in order of how much capability they unlock:
@@ -76,8 +111,8 @@ See `CONNECTORS.md` for the per-connector capability matrix.
 
 Every skill has the same output contract:
 
-1. **Live brief** *(default)* — rendered as a scannable widget in the chat (verdict line + 3–5 cards + optional drill-down, ≤ 350 words per the 90-second-scan discipline in `shared/widget-brevity.md`)
-2. **Notion log** *(optional, approval-gated)* — for skills that benefit from persistence (coaching, MAP, audits, expansion logs, plays library)
+1. **Live brief** *(default)* — rendered as a scannable widget in the chat (verdict line + 3–5 cards + optional drill-down, ≤ 350 words per the 90-second-scan discipline in `shared/widget-brevity.md`), styled per the editorial design system in `shared/artifact-design.md`
+2. **Persisted artifact** *(optional, approval-gated)* — for skills that benefit from persistence (coaching, MAP, audits, expansion logs, plays library). **Notion is optional**: if a workspace MCP is connected it writes there; otherwise it writes a portable, dual-audience Markdown file to `outputs/` structured for both the rep and their manager (Summary · For the rep · For the manager · Evidence)
 3. **Slack draft** *(optional, approval-gated)* — for skills that produce something rep-shareable (talk tracks, outbound, escalation prep)
 
 Hard rules across every skill:
