@@ -1,21 +1,36 @@
-# Modjo Sales Agent — v0.1.0
+# Modjo Sales Agent
 
-Your Modjo data, automated. 19 skills covering the rep's daily rhythm, per-deal execution, portfolio view, coaching, and post-sale — built on top of your Modjo workspace.
+<p align="center">
+  <img src="https://gifrific.com/wp-content/uploads/2014/01/Jordan-Belfort-Pound-Chest-at-Restaurant-The-Wolf-of-Wall-Street.gif" alt="The name of the game: close." width="480">
+</p>
 
-## What it is
+> **Your Modjo data, weaponized.** 18 AI skills that prep your meetings, audit your deals, score your calls, coach your reps, and hunt your expansion — straight off your Modjo conversations. The agent already read every call. Now it does the work.
 
-The Modjo Sales Agent turns your Modjo conversation intelligence into automated sales workflows. Every skill is built around a sales job-to-be-done and uses your Modjo calls, deals, accounts, contacts, emails, and AI agents directly. No re-typing, no copy-paste, no asking "what did this rep say on the last call?" — the agent reads it and acts on it.
-
-## Quick install
-
-This repo is a self-contained Claude Code plugin **and** marketplace. Install in two commands from inside Claude Code:
+**Stop digging through call recordings. Start closing.** Every morning brief, deal audit, pipeline review, and coaching session — pulled from what your buyers *actually said*, drafted and ready, in 90 seconds. No copy-paste. No "what did they say on the last call?" The agent read it. It remembers. It acts.
 
 ```text
 /plugin marketplace add tdeschamps/modjo-sales-agent
 /plugin install modjo-sales-agent
 ```
 
-Then reload and try a skill:
+— then `/modjo-sales-agent:start-day` and watch your day get triaged for you. Full install options below. ⬇️
+
+## What it is
+
+The Modjo Sales Agent turns your Modjo conversation intelligence into automated sales workflows. Every skill is built around a real sales job-to-be-done and runs on your Modjo calls, deals, accounts, contacts, emails, and AI agents directly. No re-typing, no copy-paste, no asking "what did this rep say on the last call?" — the agent reads it and acts on it.
+
+**Why reps actually keep it open:**
+
+- 🌅 **Walk in already prepped** — `/start-day` and `/prep-meeting` turn this morning's calendar into a battle plan built from real call history.
+- 🎯 **Never wing a deal review** — `/audit-deal` scores MEDDPICC from what buyers said, not what the CRM wishes were true.
+- 📞 **Every call makes you sharper** — `/score-call` grades the call and hands you the exact line to say next time.
+- 🔭 **See the upside first** — `/expansion-scan` and `/review-pipeline` surface the deals and signals you'd have missed.
+- 🧠 **Coaching that sticks** — `/coach` tracks each rep's themes week over week with quoted evidence, not vibes.
+- 🚫 **It won't make stuff up** — missing evidence gets flagged, never invented. (We built a whole eval harness to prove it.)
+
+## Install & first run
+
+This repo is a self-contained Claude Code plugin **and** marketplace. After the two-command install above, reload and run your first skill:
 
 ```text
 /reload-plugins
