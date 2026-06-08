@@ -1,0 +1,20 @@
+{
+  "name": "modjo-sales-agent",
+  "owner": {
+    "name": "Thomas Descamps",
+    "url": "https://github.com/tdeschamps"
+  },
+  "metadata": {
+    "description": "Marketplace for the Modjo Sales Agent — a sales toolkit built on your Modjo workspace.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "modjo-sales-agent",
+      "source": "./",
+      "description": "The Modjo Sales Agent — your Modjo data, automated. 18 skills across the rep's daily rhythm, per-deal execution, portfolio view, coaching, and post-sale, plus a router. Modjo MCP is the primary data layer; Notion optional for persistence; CSV paste-in onramp if you're not on Modjo yet.",
+      "version": "0.1.0",
+      "keywords": ["modjo", "sales", "conversation-intelligence", "meddpicc", "coaching", "pipeline", "forecast", "deal-execution"]
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "modjo-sales-agent",
+  "version": "0.1.0",
+  "description": "The Modjo Sales Agent — your Modjo data, automated. 19 skills covering the rep's daily rhythm, per-deal execution, portfolio view, coaching, and post-sale. Plug into your Modjo workspace; Notion optional for persistence; CSV paste-in onramp if you're not on Modjo yet.",
+  "keywords": [
+    "modjo",
+    "sales",
+    "conversation-intelligence",
+    "meddpicc",
+    "coaching",
+    "pipeline",
+    "forecast",
+    "deal-execution"
+  ],
+  "author": {
+    "name": "Thomas Descamps"
+  },
+  "homepage": "https://github.com/tdeschamps/modjo-sales-agent",
+  "license": "MIT"
+}
