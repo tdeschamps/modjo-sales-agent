@@ -30,6 +30,18 @@ This file maps the conceptual operations each skill performs to the Modjo MCP to
 | `score_deal_meddpicc(crmId)` | discover MEDDPICC-capable agent via `get_agents` (search="MEDDPICC"), then `ask_anything_on_deal(crmId, question, agentUuid)` | pillar scores + evidence | One agent call per pillar. Never multi-part. |
 | `discover_agents(search)` | `get_agents` with search filter | list of agent UUIDs + names + descriptions | Cache the result; don't call multiple times per skill run |
 
+### Gmail — optional, draft-only (used by `write-the-follow-up`)
+
+Gmail is an optional connector and the plugin's **only write surface** — and it writes drafts only, never sends. Used by `write-the-follow-up` to read the real thread, learn the rep's voice, and place a threaded draft in the mailbox.
+
+| Conceptual op | Gmail tool | Returns / does | Notes |
+|---|---|---|---|
+| `read_thread(threadId)` | `get_thread` | full thread bodies | The real written exchange — richer than Modjo's email metadata |
+| `search_threads(query)` | `search_threads` | matching threads | Find the thread for an account/contact; also pull the rep's recent **sent** mail for the voice profile |
+| `create_email_draft(to, subject, body, threadId)` | `create_draft` | creates a **draft** in the mailbox | **Never sends.** Always threaded to the conversation. Approval-gated — ask before creating; render the draft inline first. |
+
+There is no send tool in the plugin's Gmail usage by design. See `voice-profile.md` for how sent mail becomes the rep's voice profile, and `output-modes.md` for the draft handoff contract.
+
 ## Large results — the file-spill recovery protocol (load-bearing)
 
 Heavy Modjo calls — especially `get_transcript`, but also large `get_calls` / `ask_anything_*` results — frequently exceed the tool-output token limit. When that happens the tool does **not** fail and does **not** return the data inline. Instead it returns a message like:
@@ -107,6 +119,7 @@ Full schemas are in `csv-schemas.md`. The reasoning that runs is the same — on
 | `lock-the-close-plan` | MAP + Notion persistence | MAP rendered, no persistence | Rep dictates commitments |
 | `unstick-this-deal` | Full with Plays Library | Full minus team plays | Paste-in situation |
 | `score-this-call` | Full with scoring agent | Manual scoring from rubric | Rep pastes transcript + notes |
+| `write-the-follow-up` | Grounded draft, neutral register (+ Gmail: voice-matched + threaded mailbox draft) | Same — Gmail layers on top of either | Rep pastes the thread / call notes |
 | `review-the-pipeline` | Full + Notion review log | Full live brief | CSV paste-in |
 | `build-net-new-pipeline` | Full + ICP file | Full minus ICP-scored fit | Rep names target segment |
 | `audit-the-forecast` | Full hygiene checks | Full | CSV paste-in |

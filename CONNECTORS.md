@@ -64,6 +64,19 @@ Unlocks **drafted** Slack messages. The agent never auto-sends — every Slack o
 - Customer-shareable kickoff agendas from `hand-off-to-csm`
 - Manager-share drafts from coaching skills
 
+### Gmail *(optional — the plugin's first write connector, draft-only)*
+
+Unlocks `write-the-follow-up`'s richest mode. Every other connector is read-only from the plugin's side; Gmail is the first that **writes** — but only ever as a **draft**, never a send.
+
+**What you get**:
+- The **real email thread** read directly (`get_thread` / `search_threads`), so the follow-up references what was actually said in writing, not just call summaries
+- **Tone-matching** — the skill learns your writing voice from your last ~15–20 sent emails (greeting, sign-off, language, sentence shape) and drafts in *your* voice. The learned voice profile is persisted and hand-correctable (see `shared/voice-profile.md`)
+- A **threaded draft placed in your mailbox** (`create_draft`) — correct recipient, subject, threaded to the conversation — ready for you to review and send from your own inbox
+
+**The guarantee**: Gmail access is used for reading threads/sent mail and for `create_draft` only. There is no send path. Nothing leaves your mailbox until *you* click send. The skill always renders the draft inline for review first, and asks before creating the Gmail draft.
+
+Without Gmail, `write-the-follow-up` still works: it drafts from Modjo's call/email data in a neutral register and you copy it into your mail client yourself.
+
 ### Calendar *(optional — Google Calendar / Outlook)*
 
 The Modjo MCP already exposes `get_calendar_events` for connected calendars. If your Modjo doesn't have a calendar integration, an external calendar MCP can fill the gap for `start-the-day` and `prep-this-meeting`.
@@ -79,6 +92,7 @@ The Modjo MCP already exposes `get_calendar_events` for connected calendars. If 
 | `lock-the-close-plan` | MAP built from call evidence | + persistent MAP under account page | Rep dictates commitments |
 | `unstick-this-deal` | Full with call evidence | + team Plays Library precedent | Paste-in only; starter plays only |
 | `score-this-call` | Full with scoring agent | + persistent score log | Rep pastes transcript or notes |
+| `write-the-follow-up` | Grounded draft, mode auto-detected, neutral register | (+ Gmail) voice-matched draft + threaded mailbox draft | Rep pastes the thread / call notes |
 | `review-the-pipeline` | Triage with deal-health overlay | + persistent weekly review log | CSV paste-in |
 | `build-net-new-pipeline` | Won-deal pattern overlay on outbound drafts | + persistent target list | Rep names target segment |
 | `audit-the-forecast` | Full hygiene checks + activity overlay | + persistent hygiene log | CSV paste-in |
@@ -109,7 +123,7 @@ Once a connector is live, every skill that benefits from it picks it up automati
 Hard rules across every skill, regardless of which connectors are live:
 
 - **Never writes to your CRM.** The Modjo MCP is read-only from the plugin's perspective. The plugin surfaces hygiene issues and proposes fixes; the rep applies them.
-- **Never auto-sends Slack, email, or any external message.** Drafts only.
+- **Never auto-sends Slack, email, or any external message.** Drafts only. Gmail is the one connector the plugin writes to, and it only ever creates a **draft** in your mailbox — there is no send path. You send from your inbox.
 - **Always asks before writing to Notion** if the target page doesn't already exist.
 - **Always renders the live brief first** even when also writing to Notion or producing a Slack draft.
 - **Single-question agent framings.** Multi-part questions to Modjo agents return empty — confirmed failure mode.

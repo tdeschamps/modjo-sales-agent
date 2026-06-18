@@ -1,7 +1,7 @@
 {
   "name": "modjo-sales-agent",
   "version": "0.1.0",
-  "description": "The Modjo Sales Agent — your Modjo data, automated. 19 skills covering the rep's daily rhythm, per-deal execution, portfolio view, coaching, and post-sale. Plug into your Modjo workspace; Notion optional for persistence; CSV paste-in onramp if you're not on Modjo yet.",
+  "description": "The Modjo Sales Agent — your Modjo data, automated. 20 skills covering the rep's daily rhythm, per-deal execution, portfolio view, coaching, and post-sale. Plug into your Modjo workspace; Notion optional for persistence; Gmail optional for drafting follow-ups in your voice; CSV paste-in onramp if you're not on Modjo yet.",
   "keywords": [
     "modjo",
     "sales",

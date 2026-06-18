@@ -4,7 +4,7 @@
   <img src="https://gifrific.com/wp-content/uploads/2014/01/Jordan-Belfort-Pound-Chest-at-Restaurant-The-Wolf-of-Wall-Street.gif" alt="The name of the game: close." width="480">
 </p>
 
-> **Your Modjo data, weaponized.** 18 AI skills that prep your meetings, audit your deals, score your calls, coach your reps, and hunt your expansion — straight off your Modjo conversations. The agent already read every call. Now it does the work.
+> **Your Modjo data, weaponized.** 20 AI skills that prep your meetings, audit your deals, score your calls, draft your follow-ups, coach your reps, and hunt your expansion — straight off your Modjo conversations. The agent already read every call. Now it does the work.
 
 **Stop digging through call recordings. Start closing.** Every morning brief, deal audit, pipeline review, and coaching session — pulled from what your buyers *actually said*, drafted and ready, in 90 seconds. No copy-paste. No "what did they say on the last call?" The agent read it. It remembers. It acts.
 
@@ -66,7 +66,7 @@ Three layers, in order of how much capability they unlock:
 
 See `CONNECTORS.md` for the per-connector capability matrix.
 
-## The 19 skills
+## The 20 skills
 
 **Daily rhythm**
 
@@ -84,6 +84,7 @@ See `CONNECTORS.md` for the per-connector capability matrix.
 | `lock-the-close-plan` | `/close-plan [deal]` | Build or refresh the customer-shareable Mutual Action Plan |
 | `unstick-this-deal` | `/stuck-on [deal]` | 90-second tactical answer when a deal is stuck |
 | `score-this-call` | `/score-call [call]` | Score one call + drafted next-time play |
+| `write-the-follow-up` | `/follow-up [deal\|call]` | Draft the follow-up email to send — in your voice, grounded in real call commitments; optional threaded Gmail draft |
 
 **Portfolio view**
 
@@ -129,10 +130,11 @@ Every skill has the same output contract:
 1. **Live brief** *(default)* — rendered as a scannable widget in the chat (verdict line + 3–5 cards + optional drill-down, ≤ 350 words per the 90-second-scan discipline in `shared/widget-brevity.md`), styled per the editorial design system in `shared/artifact-design.md`
 2. **Persisted artifact** *(optional, approval-gated)* — for skills that benefit from persistence (coaching, MAP, audits, expansion logs, plays library). **Notion is optional**: if a workspace MCP is connected it writes there; otherwise it writes a portable, dual-audience Markdown file to `outputs/` structured for both the rep and their manager (Summary · For the rep · For the manager · Evidence)
 3. **Slack draft** *(optional, approval-gated)* — for skills that produce something rep-shareable (talk tracks, outbound, escalation prep)
+4. **Gmail draft** *(optional, approval-gated)* — `write-the-follow-up` can place a threaded draft in your mailbox. It's a draft — it lands in Drafts, never sends.
 
 Hard rules across every skill:
 
-- **Never auto-sends.** Slack drafts are drafts. Notion writes ask before creating new pages.
+- **Never auto-sends.** Slack and Gmail outputs are drafts. The Gmail draft lands in your mailbox threaded to the conversation; you send it. Notion writes ask before creating new pages.
 - **Never writes to your CRM.** The agent surfaces issues and proposes fixes; you apply them.
 - **Single-question agent framings.** Multi-part agent questions return empty — confirmed failure mode.
 - **Anti-fabrication.** No invented quotes, themes, deltas, or precedents. Missing evidence is labelled, not silently filled in.
@@ -141,8 +143,9 @@ Hard rules across every skill:
 
 1. **Connect Modjo** — the agent looks for your workspace's Modjo MCP. From your host (Cowork / Claude Code), open the connector picker and authenticate Modjo.
 2. *(Optional)* **Connect Notion** — for persistence. Create a top-level page called `Sales Coaching` with sub-pages per IC (`[IC Name] — Coaching`) and a `Plays Library` page. See `shared/notion-structure.md` for the recommended hierarchy.
-3. *(Optional)* **Fill in `shared/icp-and-personas.md`** if you want `build-net-new-pipeline` and `learn-from-similar-deals` to score against your real ICP rather than inferred patterns.
-4. **Try a skill.** `/start-day`, `/audit-deal [your hardest open deal]`, or `/coach [a rep's name]` — pick one.
+3. *(Optional)* **Connect Gmail** — lets `write-the-follow-up` read the real email thread, learn your writing voice from your sent mail, and drop a threaded draft in your mailbox. Draft-only — the plugin never sends. Without it, the skill drafts from Modjo data in a neutral register.
+4. *(Optional)* **Fill in `shared/icp-and-personas.md`** if you want `build-net-new-pipeline` and `learn-from-similar-deals` to score against your real ICP rather than inferred patterns.
+5. **Try a skill.** `/start-day`, `/audit-deal [your hardest open deal]`, `/follow-up [a deal you just had a call on]`, or `/coach [a rep's name]` — pick one.
 
 Without Modjo connected, every skill still runs in CSV/paste-in mode. See `shared/csv-schemas.md` for the exact paste-in formats.
 
@@ -150,7 +153,7 @@ Without Modjo connected, every skill still runs in CSV/paste-in mode. See `share
 
 - **Modjo-first.** The agent is built for Modjo customers. The CSV paste-in path exists as an onramp, not as the primary mode.
 - **Agent discovery, not hard-coded UUIDs.** The agent discovers your team's Modjo agents at runtime via `get_agents`. Customers with renamed or custom agents work without plugin changes.
-- **Approval-gated external writes.** Notion writes and Slack drafts require explicit user confirmation.
+- **Approval-gated external writes.** Notion writes, Slack drafts, and Gmail drafts require explicit user confirmation. Gmail is the plugin's first optional *write* connector — and it only ever creates drafts, never sends.
 - **Anti-fabrication discipline.** Codified in every skill's `# Rules` section. Baseline weeks are labelled. Missing evidence is named.
 - **Theme tracking is real or absent.** Theme tracker only shows weeks with real logged entries — no back-filled history, no manufactured deltas.
 
@@ -170,7 +173,8 @@ Every SKILL.md follows the same pattern:
 
 ## v0.1.0 notes
 
-- 19 skills, all implemented. None are stubs.
+- 20 skills, all implemented. None are stubs.
+- `write-the-follow-up` is the most output-driven skill — its output *is* the email the rep sends. It auto-detects the situation (post-call recap / revival nudge / answer an open question), drafts in the rep's own voice (a persisted, hand-correctable voice profile learned from real sent emails), and — with Gmail connected — drops a threaded draft in the mailbox. Modjo-first; Gmail is optional and draft-only.
 - Methodology rubric stays swappable — ships with MEDDPICC; teams using BANT / SPICED / MEDDIC can swap the file content from `shared/qualification-rubrics/`.
 - `forecast` requires the user to provide a quota — gap analysis without a quota is meaningless, so the skill asks rather than assumes.
 - `competitive-intelligence` is honest about sample size — battlecards built from ≤ 3 lost deals are labelled "anecdote, not pattern."

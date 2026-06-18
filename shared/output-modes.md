@@ -49,9 +49,22 @@ Produce a Slack-formatted message (with proper markdown, mentions where known, �
 
 **Use for**: build-net-new-pipeline outbound drafts, learn-from-similar-deals email follow-ups, start-the-day "share with manager" digests, spot-expansion-signals internal flags.
 
+## 4. Gmail draft handoff (optional — `write-the-follow-up`)
+
+A variant of the draft contract for email, available only when Gmail is connected. After the email is rendered inline and the user approves it, the skill places it as a **draft in the user's mailbox** via `create_draft` — threaded to the conversation, correct recipient and subject — for the user to review and send from their own inbox.
+
+This is still "drafts only, never auto-send": there is no send path. It removes the copy-paste step, not the human's hand on the send button.
+
+- **Always render the email inline first** (mode 1), so the user sees exactly what would be created.
+- **Ask before creating the draft** ("Want me to drop this in your Gmail drafts, threaded to the [X] thread?"). Only create on an explicit yes.
+- **Thread it.** A follow-up belongs in the existing conversation — pass the `threadId`, don't start a new thread.
+- **Also persist the portable copy** (mode 2 / `outputs/`) so the email is recoverable without Gmail.
+
+**Use for**: write-the-follow-up. (Reusable by other email-drafting skills later — build-net-new-pipeline, start-the-day, score-this-call — under the same draft-only guarantee.)
+
 ## Hard rules
 
-- **Never auto-send** to Slack, email, or any external system. Drafts only.
+- **Never auto-send** to Slack, email, or any external system. Drafts only. The Gmail draft handoff (mode 4) creates a draft in the user's mailbox — it never sends; the user sends from their inbox.
 - **Never write to Salesforce or any CRM** in v0.2. Out of scope, will be added with careful guardrails later.
 - **Notion is optional — never a prerequisite.** If no workspace MCP is connected, persist to a portable Markdown artifact in `outputs/`; the skill must deliver full value with zero Notion setup. Only ask before writing to Notion if a workspace MCP IS connected and the target page doesn't already exist.
 - **Persisted artifacts are dual-audience.** Structure coaching/deal/pipeline artifacts with a shared Summary + "— For the rep —" + "— For the manager —" + Evidence, so the same file serves the managee and the manager.

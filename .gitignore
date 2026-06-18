@@ -1,4 +1,23 @@
-.DS_Store
+# This repo is the PLUGIN only. Dev tooling, eval harness, and runtime artifacts
+# stay local and out of distribution.
+
+# --- Eval harness — dev tooling, not part of the plugin (lives/ships separately) ---
+eval/
+
+# --- Customer data / runtime artifacts — NEVER commit (contain real Modjo deal data) ---
+outputs/
+
+# --- Private project memory & dev process artifacts ---
+memory/
+docs/
+
+# --- Local Claude Code settings ---
+.claude/
+
+# --- Python ---
 __pycache__/
 *.pyc
-.claude/
+.pytest_cache/
+
+# --- OS ---
+.DS_Store
