@@ -31,6 +31,7 @@ If your ICP file is empty, I'll flag the gap and run on inferred patterns from y
 - `../../shared/icp-and-personas.md` — the ICP definition. If empty, fall back to inferred patterns from `get_deals` Closed Won.
 - `../../shared/coaching-themes.md` — for tagging the right pains
 - `../../shared/output-modes.md` — Live brief + Slack drafts
+- `../../shared/voice-profile.md` — draft cold first-touches in the rep's tone (**voice-styled** cold register, not warm-matched); see "Applying the profile in other skills"
 - `../../shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
 
 # Data to pull
@@ -113,6 +114,8 @@ Different channel = different shape:
 - **LinkedIn message** — ≤300 chars, conversational
 - **Multi-touch sequence** — 4 touches over 14 days, escalating value, last touch is a respectful break-up
 
+**Voice**: draft in the rep's tone, but **voice-styled for cold outbound** — apply the stable traits (language, sentence shape, sign-off, the `avoid` rules) from the rep's voice profile, *not* warm-thread intimacy. No casual "Salut" or "as we discussed" to a stranger. Label the drafts "voice-styled — your tone, cold-outbound register." Load/build the profile per `../../shared/voice-profile.md`; with no sent-email source, use a neutral register and say so. Voice is *how* the message reads; the reason-to-reach-out and persona pain (above) are *what* it says — the profile never overrides those.
+
 # Output — Live brief (widget)
 
 `show_widget` with `title="pipe_gen_[ic-slug]_[YYYY-MM-DD]"`. Layout:
@@ -156,6 +159,7 @@ Quick list of candidates that scored low + why, so the rep doesn't waste time.
 
 - **Real reasons to reach out, always.** If the only "reason" is "they're in our ICP," the personalization isn't real — say so and either dig deeper or move the account to "skip."
 - **No template-shaped messages.** Each draft must be readable as a one-off.
+- **Voice-styled, not voice-matched.** Cold outbound borrows the rep's stable tone, never warm-thread familiarity, and is labelled as such (`../../shared/voice-profile.md`). No sent-email source → neutral register, labelled. Never fake the rep's tone or imply a relationship that doesn't exist.
 - **Respect inbox time** — emails ≤120 words, no marketing-copy adjectives, no "circling back."
 - **Never claim mutual connections** unless verified via Modjo or LinkedIn data the rep provides.
 - **If ICP is empty** (first run, no shared/icp-and-personas content) — surface that explicitly and offer to bootstrap from won-deal inference before drafting outreach.

@@ -29,6 +29,7 @@ Every coaching point I make ships with a quoted moment or a specific timestamp. 
 - `../../shared/coaching-themes.md` — theme taxonomy for tagging observations
 - `../../shared/qualification-rubric.md` — for the MEDDPICC-moments scan
 - `../../shared/output-modes.md` — Live brief default; optional Notion log to the rep's coaching page
+- `../../shared/voice-profile.md` — draft the next-time play in the rep's voice (warm register); how to load/build/apply the profile
 - `../../shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
 
 # Data to pull
@@ -82,7 +83,7 @@ Each one: theme tag from `coaching-themes.md`, what happened with a quoted momen
 At least one specific strength even on a weak call. Include the quote so the rep can hear what they did right.
 
 ### Drafted next-time play
-A short script or talk-track to use on the next similar moment. Sendable as-is.
+A short script or talk-track to use on the next similar moment. Sendable as-is. If the play is a follow-up email to this buyer, draft it in the rep's voice — load or build the voice profile per `../../shared/voice-profile.md` (warm / voice-matched register). With no sent-email source, draft in a neutral register and label it; never fake the rep's tone.
 
 ## Example skeleton
 
@@ -112,4 +113,5 @@ A short script or talk-track to use on the next similar moment. Sendable as-is.
 - **At least one strength, even on weak calls.** Reinforce before correcting (same rule as `coach-this-rep`).
 - **Cap agent calls at 3 per scoring run.** Single-question framings (we learned this the hard way — multi-part agent questions return empty).
 - **No fabricated scoring.** If the agent and summary both fail on a dimension, mark it "not scored — insufficient data" rather than guess.
+- **Voice is earned, not faked.** A drafted follow-up uses the rep's voice only from a real sent-email source (per `../../shared/voice-profile.md`). No source → neutral register, labelled. Never invent a style trait.
 - **Approval-gated outputs.** Notion log writes and Slack drafts require explicit user confirmation.

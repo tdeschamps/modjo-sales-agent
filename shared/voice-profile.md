@@ -108,3 +108,26 @@ voice.
 The profile styles the email; it never invents the email's facts. Commitments, quotes,
 and recap lines still come from grounded call/deal evidence per
 `using-modjo-mcp.md` — the voice profile changes *how it reads*, never *what it claims*.
+
+---
+
+## Applying the profile in other skills
+
+The profile is shared by every skill that drafts email. How fully it applies depends on
+the relationship the email assumes — warm thread vs cold first-touch. State the right
+label so the rep knows what they're getting.
+
+- **Warm follow-up** — post-call recap, an existing thread, a known contact. Apply the
+  profile fully: greeting, sign-off, language, sentence shape, signature moves. Label
+  **voice-matched**. (`write-the-follow-up`, `score-this-call`, `start-the-day`.)
+- **Cold first-touch** — no prior relationship, the rep has never written to this person.
+  Apply only the **stable** traits: language, sentence shape, sign-off, and the `avoid`
+  rules (no emojis, no marketing adjectives). Do **not** apply warm-thread intimacy — a
+  casual "Salut" or a callback to "our last chat" is wrong for a stranger. Label
+  **voice-styled — your tone, cold-outbound register**. (`build-net-new-pipeline`.)
+- **No profile / no source** — neutral professional register, labelled (see "No source at
+  all" above). Never claim a voice match without a real sent-email source.
+
+Voice is *how* the email reads; the skill's own rules still own *what* it says — a cold
+draft's reason-to-reach-out and persona language come from `icp-and-personas.md`, a recap's
+commitments come from grounded call evidence. The profile never overrides those.

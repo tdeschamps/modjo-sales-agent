@@ -30,6 +30,7 @@ Infer everything you can; ask only what you can't:
 
 - `../../shared/coaching-themes.md` — theme taxonomy
 - `../../shared/output-modes.md` — this skill is **Live brief** by default, with optional Slack draft for "share with manager"
+- `../../shared/voice-profile.md` — draft the day's emails/actions in the rep's voice (warm register); how to load/build/apply the profile
 - `../../shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
 
 # Data to pull (in parallel where possible)
@@ -77,7 +78,7 @@ Rank by urgency × value. Urgency signals:
 - Stage regression vs prior week
 - Surfaced in prior daily brief as "needs action" and still open
 
-For each: deal name, ARR, why it's at risk in one line, and a **drafted action** the rep can ship in the next hour (email / Slack message / calendar invite). No placeholders, use real names from `get_contacts`.
+For each: deal name, ARR, why it's at risk in one line, and a **drafted action** the rep can ship in the next hour (email / Slack message / calendar invite). No placeholders, use real names from `get_contacts`. Draft emails in the rep's voice — load or build the voice profile per `../../shared/voice-profile.md` (warm / voice-matched register); with no sent-email source, use a neutral register and label it.
 
 **Quarter-end weighting**: if today is in the last 30 days of the quarter, weight close-date urgency × 2 — small at-risk deals closing this quarter outrank larger ones closing next.
 
@@ -143,7 +144,7 @@ If the rep says "send to my manager" or "share this," produce a tight Slack-form
 
 - **Intervene, don't audit.** Every problem ships with a drafted fix. If you can't draft a fix, don't surface the problem.
 - **Quote real moments** — call name, date, timestamp. Generic observations are dropped.
-- **Drafts must be sendable** — real prospect first names, real prior context, signed as the rep.
+- **Drafts must be sendable** — real prospect first names, real prior context, signed as the rep. In the rep's voice when a profile source exists (`../../shared/voice-profile.md`); neutral register, labelled, when it doesn't. Never fake the rep's tone.
 - **Skip empty sections** — better a 400-word brief that's all signal than 800 words of filler.
 - **Under 800 words total in the brief widget.**
 - **Honor timezone** — compute the day boundaries in the rep's local time, not UTC.
