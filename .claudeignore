@@ -1,0 +1,20 @@
+# Paths tracked in the source repo but excluded from the DISTRIBUTED plugin.
+# The host only loads skills/, commands/, shared/, and the manifests at runtime —
+# these are dev-only and should not travel in a packaged/bundled plugin.
+
+# Eval harness — dev tooling that verifies the skills; not used at plugin runtime
+eval/
+
+# Design specs & dev-process artifacts
+docs/
+
+# Private project memory (session/customer specifics)
+memory/
+
+# Dev/runtime artifacts & local config
+outputs/
+.claude/
+__pycache__/
+*.pyc
+.pytest_cache/
+.DS_Store

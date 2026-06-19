@@ -1,8 +1,10 @@
-# This repo is the PLUGIN only. Dev tooling, eval harness, and runtime artifacts
-# stay local and out of distribution.
+# This is the plugin SOURCE repo. The eval harness (harness/, scenarios/, tests/) is
+# tracked here so the skills' expected behavior travels with the code; it is excluded
+# from the DISTRIBUTED plugin via .claudeignore, not from git. Only runtime artifacts
+# and customer data are git-ignored.
 
-# --- Eval harness — dev tooling, not part of the plugin (lives/ships separately) ---
-eval/
+# --- Eval run output — contains real Modjo deal data, NEVER commit (the harness itself IS tracked) ---
+eval/results/
 
 # --- Customer data / runtime artifacts — NEVER commit (contain real Modjo deal data) ---
 outputs/
