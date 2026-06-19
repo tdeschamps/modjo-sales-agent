@@ -46,10 +46,11 @@ Before drafting, read:
    - Account by name → `find_account` (e.g. Modjo `get_accounts`) filters.name=`"[company]"` → `crmId`
    - Deal by name → `list_deals` (e.g. Modjo `get_deals`) filters.name=`"[deal name]"` → `crmId`, `accountCrmId`, contacts
    - Call by URL/id → use the call id directly, then resolve its account/deal
-2. Pull the recent state — these two timestamps drive mode detection:
+2. Pull the recent state — these timestamps drive mode detection:
    - Latest calls on the account: `get_calls` filters.accounts.crmIds=[crmId], limit=5, dateRange last 90 days. Note the **latest call date**. Read `summary` fields.
-   - Latest emails: `get_emails` filters.accounts.crmIds=[crmId], limit=10. Note the **last email date + direction** (who sent it last) and any unanswered buyer ask.
-3. Resolve the recipient → `get_contacts` for the real first name + email. Never draft to a placeholder.
+   - Latest emails: `get_emails` filters.accounts.crmIds=[crmId], limit=10. Note the **last email date + direction** (who sent it last) and any unanswered buyer ask. Read the body of any rep-sent email dated **after** the latest call.
+3. **Already-followed-up check (do this before choosing a mode).** Look at the rep's own sent emails after the latest call. If one already recaps that call — thanks-for-the-call opener, the agreed next step, the commitments — then **the follow-up is already done**. Do NOT draft a post-call recap; you'd duplicate what the rep already sent. Instead move to the next real touch (a nudge toward the agreed next step, or an answer to a still-open ask), or, if nothing is genuinely needed yet, say so plainly ("Your 17 Jun recap already covers this call; next real touch is the 26 Jun workshop — want a pre-workshop nudge nearer the date?") and stop rather than manufacture an email.
+4. Resolve the recipient → `get_contacts` for the real first name + email. Never draft to a placeholder. If the buyer's contact record has no email (common — the call names them but CRM has no address), say so and draft anyway, noting the rep must supply the address; never invent one.
 
 ### Step 2 — Detect the mode (and say why)
 
@@ -57,11 +58,12 @@ Pick from the data, then tell the rep which you picked and the one-line reason. 
 
 | Mode | Detected when | The draft does |
 |---|---|---|
-| **Post-call recap** | Latest call is newer than the latest email and recent (≈ last few days) | Recaps the value, **confirms the commitments quoted from that call**, proposes the agreed next step |
+| **Post-call recap** | A recent call (≈ last few days) and **no rep-sent recap email after it** (per the already-followed-up check) | Recaps the value, **confirms the commitments quoted from that call**, proposes the agreed next step |
 | **Revival nudge** | Last buyer-initiated touch > 7 days ago and no open recent call | References the last real exchange; gives the buyer one easy reason to reply |
 | **Answer an open question** | There's an unanswered buyer ask in the thread or last call (pricing, a doc, a stakeholder intro) | Delivers the answer / asset the buyer is waiting on |
+| **Pre-next-step nudge** | The recap is already sent and an agreed next step (workshop, demo, internal review) is upcoming | A light nudge toward that step — what to bring / confirm — referencing the agreed plan, not re-recapping |
 
-If signals are mixed (e.g. recent call *and* an open buyer ask), prefer the one that moves the deal — usually answering the open ask — and say so.
+If signals are mixed (e.g. recent call *and* an open buyer ask), prefer the one that moves the deal — usually answering the open ask — and say so. **If the recap is already sent and nothing else is genuinely needed yet, don't manufacture an email** — say what's already covered and what the next real touch is.
 
 ### Step 3 — Ground the content (the anti-generic unlock)
 
@@ -135,6 +137,7 @@ Render the **live brief first** (always), then offer the handoffs. Three parts:
 - **Real recipient, always.** Pull the first name + email from `get_contacts`. No `{first_name}` placeholders ship.
 - **Never auto-sends.** There is no send path. The Gmail handoff creates a **draft** in the rep's mailbox, threaded, approval-gated — the rep sends from their inbox. Render the inline draft and get approval before creating the Gmail draft.
 - **Announce the mode.** Always say which mode you picked and why, so the rep can redirect in one word.
+- **Never duplicate a sent follow-up.** Run the already-followed-up check first. If the rep already recapped the call by email, don't draft another recap — move to the next real touch or honestly say nothing's needed yet. Drafting a duplicate the rep already sent is a failure of this skill.
 - **If a tool returns nothing**, say it in one line ("No call in the last 90 days — drafting a light revival nudge from the last email:") and continue.
 
 Write the follow-up.
