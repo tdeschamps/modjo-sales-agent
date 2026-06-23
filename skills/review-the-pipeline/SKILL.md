@@ -29,6 +29,7 @@ I'll never silently drop deals — every open deal on your book is either in a t
 - `../../shared/qualification-rubric.md`
 - `../../shared/coaching-themes.md`
 - `../../shared/output-modes.md` — Live brief default; optional Notion log for the manager-led case
+- `../../shared/voice-profile.md` — to draft the at-risk nudge in the rep's voice (warm register)
 - `../../shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
 
 # Data to pull
@@ -89,7 +90,9 @@ Pipeline value (CRM total, **true-scope adjusted total**, weighted), # deals aft
 The single most important thing about this pipeline state right now.
 
 ### At risk (🔴) — disqualify or rescue this week
-Card per deal: name, ARR, days inactive, why it's red, and a single specific action (disqualify / book the unstick call / escalate to manager). Drafted action where possible.
+Card per deal: name, ARR, days inactive, why it's red, and a single specific action (disqualify / book the unstick call / escalate to manager).
+
+For the **top 1–2 red deals where the right move is a buyer touch** (re-engage a silent champion, confirm a slipped step), don't just name the action — **draft it as a sendable message** in the rep's voice per `../../shared/voice-profile.md` (warm register; neutral + labelled if no sent-email source), grounded in a real quoted call/email moment (`ask_anything_on_deal` citation), real recipient first name, no placeholders. If the right move is disqualify or escalate (not a buyer touch), no draft — name the move. Cap at 2 drafts so the review stays scannable; the rep can hand any draft to `/follow-up` to drop into Gmail.
 
 ### Hot (🟢) — protect the momentum
 Card per deal: name, ARR, what's working, what to keep doing. Don't over-engineer wins.
@@ -133,6 +136,7 @@ Top 3 deals to spend most time on, in order. Why each.
 - **Conviction signals come from real data** — recent buyer-initiated touches, mapped stakeholders, quoted commitments. Not stage labels.
 - **Don't assert a clean bill you can't verify.** Statements like "0 past close" or "nothing overdue" are claims — only make them if you actually checked close dates/activity for the deals in question. If call-recency or data is limited, say "no overdue deals found in the data checked" — never present an unverified clean status as fact.
 - **Silent / auto-dated deals get triaged, not hidden.** Deals with no recent activity and a suspicious auto-set close date must each land in a bucket or be explicitly flagged "ambiguous — needs rep confirmation." Do not aggregate them into a single "CRM hygiene" line that lets ~25 real deals disappear from the review.
+- **The top red deals ship a draft, not just a verdict.** For the top 1–2 at-risk deals whose right move is a buyer touch, draft a sendable nudge in the rep's voice (per `../../shared/voice-profile.md`), grounded in a quoted moment. Cap at 2 so the triage stays scannable; disqualify/escalate moves get named, not drafted. Never invent a commitment to make a nudge land.
 - **Concentration risk matters** — if 60%+ of forecast sits in 1–2 deals, flag it.
 - **Under 1000 words in the widget.**
 - **Manager-led mode is not just gentler in tone** — it surfaces only the top 5 deals that matter for this rep this week + one explicit "what does the rep need from you" section. A 50-deal triage is for the IC; a manager wants the high-leverage subset.

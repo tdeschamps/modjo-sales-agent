@@ -28,6 +28,7 @@ I never write to your CRM. I surface issues and propose fixes — the rep applie
 - `../../shared/qualification-rubric.md` — for the stakeholder hygiene cross-check
 - `../../shared/data-sources.md` — for the CRM ID gotcha and the conceptual data ops
 - `../../shared/output-modes.md` — Live brief default; optional Slack draft to manager for forecast-conversation prep
+- `../../shared/voice-profile.md` — to draft the one buyer-touch a finding needs (e.g. confirm a slipped close date) in the rep's voice
 - `../../shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
 
 # The eight hygiene checks
@@ -112,6 +113,9 @@ For each issue: the deal, the evidence quote (or "no evidence — CRM out of syn
 ### 30-minute cleanup plan
 A ranked list of fixes by impact, capped at the top 10. The rep can work through this in one focused session.
 
+### Drafted buyer touch — when a fix needs the customer, not the CRM
+Most fixes here are CRM edits the rep applies. But some findings can only be resolved by **asking the buyer** — a far-future or missing close date that needs the buyer to confirm timing, a stage stagnation hiding a silent champion. For the **single most important finding of that kind**, draft the outreach the rep should send — in the rep's voice per `../../shared/voice-profile.md` (warm register; neutral + labelled if no sent-email source), grounded in a real quoted call/email moment (`ask_anything_on_deal` citation), real recipient, no placeholders. One draft, only when a finding genuinely needs a buyer touch — if every finding is a pure CRM edit, draft nothing and say so. The rep can hand the draft to `/follow-up` to drop it into Gmail. CRM fixes themselves stay rep-applied — the skill never writes to the CRM.
+
 ### Manager-action prompts
 If running in manager-mode: which findings need the manager to follow up with the rep (e.g. missing lossReasons are typically a coaching issue, not a one-off).
 
@@ -138,6 +142,7 @@ If running in manager-mode: which findings need the manager to follow up with th
 # Rules
 
 - **The skill never writes to CRM.** It surfaces issues and proposes fixes. The rep applies them. (Same hard rule as `output-modes.md`.)
+- **A finding that needs the buyer ships a draft.** Where a fix can only be resolved by asking the customer (confirm a slipped close date, re-engage a silent champion), draft that one outreach in the rep's voice (per `../../shared/voice-profile.md`), grounded in a quoted moment. Only when a buyer touch is genuinely needed — pure CRM edits get no draft. Never invent a buyer commitment.
 - `../../shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
 - **Quote evidence for every amount mismatch.** "CRM €3,200 vs stated €70k" needs the call date and the quote. Never claim a mismatch from inference alone.
 - **Empty tool returns ≠ verified zero activity.** If `get_calls` / `get_emails` return nothing for a deal, that is *absence of data*, not proof of *zero activity*. Never write "0 calls + 0 emails in 60 days (verified)" or frame a deal as activity-suppressed when the returns were simply empty. Say "no activity found in Modjo for this deal (may be untracked)" — label it as a data gap, not a verified fact.
