@@ -1,0 +1,7 @@
+{"type":"system","subtype":"init","session_id":"sess-abc"}
+{"type":"assistant","message":{"content":[{"type":"tool_use","name":"ToolSearch","input":{"query":"select:mcp__modjo__get_deals"}}]}}
+{"type":"user","message":{"content":[{"type":"tool_result","content":[{"type":"tool_reference","tool_name":"mcp__modjo__get_deals"}]}]}}
+{"type":"assistant","message":{"content":[{"type":"tool_use","name":"mcp__modjo__get_deals","input":{"filters":{"status":["Open"]}}}]}}
+{"type":"user","message":{"content":[{"type":"tool_result","content":"{\"values\":[{\"name\":\"Planity France\",\"contacts\":[]}]}"}]}}
+{"type":"assistant","message":{"content":[{"type":"text","text":"Verdict: Champion scored 0 — no champion identified."}]}}
+{"type":"result","subtype":"success","is_error":false,"result":"Verdict: Champion scored 0 — no champion identified.","session_id":"sess-abc","total_cost_usd":0.12,"usage":{"input_tokens":100,"output_tokens":20}}
