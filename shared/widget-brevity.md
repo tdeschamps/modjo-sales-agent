@@ -1,8 +1,10 @@
 # Widget brevity — every skill's output discipline
 
-A consistent set of brevity rules every widget output must respect. This file is the load-bearing reference; each SKILL.md says "render per `shared/widget-brevity.md`" rather than duplicating the rules.
+A consistent set of brevity rules every artifact must respect. This file is the load-bearing reference; each SKILL.md says "render per `shared/widget-brevity.md`" rather than duplicating the rules.
 
-**Visual design:** brevity is *what* goes in the widget; `shared/artifact-design.md` is *how it looks* — the Munro editorial system (cream canvas, Bark Brown ink, whisper-weight grotesque, flat hairline cards, one Deep Teal action). Every widget uses that design's drop-in CSS + skeleton. The two files compose: ≤350 words / ≤5 cards (this file), rendered in the Munro style (that file).
+**Visual design:** brevity is *what* goes in the artifact; `shared/artifact-design.md` is *how it looks* — the Munro editorial system (cream canvas, Bark Brown ink, whisper-weight grotesque, flat hairline cards, one Deep Teal action), now extended for the interactive medium. The two files compose: ≤350 words / ≤5 cards (this file), rendered in the Munro style (that file). The classes and component vocabulary are in `content-model.md`.
+
+**The brevity cap applies to the DEFAULT VIEW.** For a static widget or Markdown, that's the whole thing. For a **native interactive artifact**, that's the **collapsed view** — see "Brevity in the interactive medium" below.
 
 ## The 90-second test
 
@@ -81,6 +83,39 @@ When a widget needs depth, the structure is:
 
 Each drill-down section is a single line link/header in the main view. The rep opens it only if they want.
 
+## Brevity in the interactive medium
+
+A native interactive artifact (`native-artifact.md`) can hold more than a static widget, because
+depth lives behind interaction. The cap adapts — it does not disappear:
+
+- **The default COLLAPSED view must pass the 90-second scan.** Header → verdict line → 3–5 visible
+  cards → anti-fabrication flags. ≤ 350 visible words *in the collapsed state*.
+- **Content behind an interaction does not count against the cap.** An expandable evidence card, a
+  collapsed stakeholder map, a click-to-reveal scorecard pillar — these are the native equivalent
+  of the old "Drill-down (optional)" section. They're free.
+- **Never collapsible:** the verdict line and every anti-fabrication flag. Honesty is never
+  something the rep has to expand to find.
+- The **Markdown projection keeps the original flat cap** and pushes depth into its explicit
+  drill-down — the same content, just static.
+- `eval/rubric.md` Dim 5 grades the **collapsed** view, not the expanded DOM.
+
+So: the interactive artifact's first screen is held to the same 90-second discipline as a static
+widget; everything richer is one click away, not on the surface.
+
+## Persisted-artifact (Class B) brevity — a softened cap
+
+A persisted record (`content-model.md` class B) is re-read across weeks, so it may carry more than
+a read-once widget — but the discipline holds in spirit:
+
+- **Still leads with the verdict line**, and still surfaces the Manager-lens callout near the top.
+- **Still cuts empty sections** (no "what worked" with nothing in it; no manager-actions with < 2).
+- May exceed 350 words for the durable detail (the full plan, the evidence section), but the
+  **scannable summary** at the top must still pass the 90-second test on its own.
+- The interactive projection of a Class B artifact collapses that durable detail behind reveals, so
+  its *default view* still meets the standard interactive cap above.
+
 ## Audit: am I hitting the cap?
 
-After rendering a widget, count: visible words, cards, drill-downs. If words > 350, cards > 5, or no verdict line — cut. Don't ship over budget.
+After rendering, count what's in the **default view**: visible words, cards, drill-downs. For a
+static widget or Markdown, that's the whole document. For an interactive artifact, that's the
+**collapsed** state. If words > 350, cards > 5, or no verdict line — cut. Don't ship over budget.

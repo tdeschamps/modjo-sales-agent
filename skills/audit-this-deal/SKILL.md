@@ -27,9 +27,11 @@ If the deal name is ambiguous (multiple matches), I'll show you the candidates a
 
 - `../../shared/qualification-rubric.md`
 - `../../shared/coaching-themes.md`
-- `../../shared/output-modes.md` — Live brief default; optional Notion log if rep wants the review persisted on the account's coaching page
+- `../../shared/content-model.md` — the artifact model: this skill emits Class A (interactive deal-review artifact) + Class B (persisted record) + Class D (drafted move). Compose the named components (verdict · evidence cards · scorecard · stakeholder table · manager-lens · plan · drafted-action), don't invent headings
+- `../../shared/native-artifact.md` — how to emit the interactive deal-review artifact + the fallback chain. Reference: `../../shared/reference/deal-review-beauhurst.html`
+- `../../shared/output-modes.md` — Interactive artifact headline + portable Markdown fallback; optional Notion log if rep wants the review persisted on the account's coaching page
 - `../../shared/voice-profile.md` — to draft the highest-impact action in the rep's voice (warm register)
-- `../../shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
+- `../../shared/widget-brevity.md` — strict 350-word / 5-card cap on the artifact's default (collapsed) view
 
 # Data to pull
 
