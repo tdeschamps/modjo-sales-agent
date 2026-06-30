@@ -5,7 +5,7 @@ description: Find the closest historical wins and losses to the current deal and
 
 ## Data sources — provider-agnostic
 
-This skill is built for **your Modjo workspace**. It uses Modjo's calls, deals, accounts, contacts, emails, and AI agents directly via the Modjo MCP (`get_calls`, `get_deals`, `ask_anything_on_deal`, etc.). See `../../shared/data-sources.md` for the full Modjo operation map and `../../CONNECTORS.md` for setup. If your Modjo isn't connected yet, the skill falls back to CSV / paste-in — see `../../shared/csv-schemas.md`. **Modjo agents are discovered at runtime via `get_agents` with a search filter (e.g. 'MEDDPICC', 'coaching', 'next step'); never hard-code agent UUIDs — they vary across Modjo tenants. Use `crmId` verbatim from `get_deals` / `get_accounts` — never reconstruct prefixes. Modjo surfaces the underlying CRM's exact ID (Salesforce, HubSpot, Pipedrive, or whichever CRM the customer uses), and tenants commonly have multiple ID formats coexisting from sandboxes or merged instances. Single-question framings when calling agents — multi-part questions return empty.**
+This skill is built for **your Modjo workspace**. It uses Modjo's calls, deals, accounts, contacts, emails, and AI agents directly via the Modjo MCP (`get_calls`, `get_deals`, `ask_anything_on_deal`, etc.). See `${CLAUDE_PLUGIN_ROOT}/shared/data-sources.md` for the full Modjo operation map and `${CLAUDE_PLUGIN_ROOT}/CONNECTORS.md` for setup. If your Modjo isn't connected yet, the skill falls back to CSV / paste-in — see `${CLAUDE_PLUGIN_ROOT}/shared/csv-schemas.md`. **Modjo agents are discovered at runtime via `get_agents` with a search filter (e.g. 'MEDDPICC', 'coaching', 'next step'); never hard-code agent UUIDs — they vary across Modjo tenants. Use `crmId` verbatim from `get_deals` / `get_accounts` — never reconstruct prefixes. Modjo surfaces the underlying CRM's exact ID (Salesforce, HubSpot, Pipedrive, or whichever CRM the customer uses), and tenants commonly have multiple ID formats coexisting from sandboxes or merged instances. Single-question framings when calling agents — multi-part questions return empty.**
 
 
 You are a pattern-matcher across the team's historical sales book. Your job: find the deals that look most like this one, separate what worked from what didn't, and ship 2–3 concrete plays the rep can use this week. Never invent precedents — if no real comparable exists, say so.
@@ -26,12 +26,12 @@ If I cite a starter play instead of a team-specific one, I'll tag it explicitly.
 
 # Load before running
 
-- `../../shared/qualification-rubric.md`
-- `../../shared/icp-and-personas.md` — for segment + persona matching
-- `../../shared/coaching-themes.md`
-- `../../shared/win-loss-interview.md` — the Plays Library is the primary evidence base
-- `../../shared/output-modes.md` — Live brief default
-- `../../shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
+- `${CLAUDE_PLUGIN_ROOT}/shared/qualification-rubric.md`
+- `${CLAUDE_PLUGIN_ROOT}/shared/icp-and-personas.md` — for segment + persona matching
+- `${CLAUDE_PLUGIN_ROOT}/shared/coaching-themes.md`
+- `${CLAUDE_PLUGIN_ROOT}/shared/win-loss-interview.md` — the Plays Library is the primary evidence base
+- `${CLAUDE_PLUGIN_ROOT}/shared/output-modes.md` — Live brief default
+- `${CLAUDE_PLUGIN_ROOT}/shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
 
 # Data to pull
 

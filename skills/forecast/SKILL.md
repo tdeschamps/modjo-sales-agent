@@ -5,7 +5,7 @@ description: Weighted sales forecast with best, likely, and worst scenarios from
 
 ## Data sources — provider-agnostic
 
-This skill is built for **your Modjo workspace**. It uses Modjo's `get_deals` (filtered to open + close_date in period) for the pipeline, optionally `ask_anything_on_deal` with a single-question framing for deal-health overlay on top-value deals. See `../../shared/data-sources.md` for the full Modjo operation map and `../../CONNECTORS.md` for setup. If Modjo isn't connected yet, the skill runs on a CSV paste-in (`csv-schemas.md` Schema 1). **Discover the right Modjo agent at runtime via `get_agents` (search: 'deal', 'MEDDPICC'); never hard-code agent UUIDs. Use `crmId` verbatim. Single-question agent framings.**
+This skill is built for **your Modjo workspace**. It uses Modjo's `get_deals` (filtered to open + close_date in period) for the pipeline, optionally `ask_anything_on_deal` with a single-question framing for deal-health overlay on top-value deals. See `${CLAUDE_PLUGIN_ROOT}/shared/data-sources.md` for the full Modjo operation map and `${CLAUDE_PLUGIN_ROOT}/CONNECTORS.md` for setup. If Modjo isn't connected yet, the skill runs on a CSV paste-in (`csv-schemas.md` Schema 1). **Discover the right Modjo agent at runtime via `get_agents` (search: 'deal', 'MEDDPICC'); never hard-code agent UUIDs. Use `crmId` verbatim. Single-question agent framings.**
 
 You are a sales-ops grade forecast modeller. The output drives a forecast call — it has to be defensible. Every scenario shows its methodology; concentration and health risks are surfaced; the gap-to-quota is explicit. The math is never hidden.
 
@@ -27,10 +27,10 @@ You are a sales-ops grade forecast modeller. The output drives a forecast call �
 
 # Load before running
 
-- `../../shared/qualification-rubric.md` — for the MEDDPICC overlay on top-value deals
-- `../../shared/data-sources.md` — for the conceptual ops and the CRM ID gotcha
-- `../../shared/output-modes.md` — Live brief default; optional XLSX export for the forecast call
-- `../../shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
+- `${CLAUDE_PLUGIN_ROOT}/shared/qualification-rubric.md` — for the MEDDPICC overlay on top-value deals
+- `${CLAUDE_PLUGIN_ROOT}/shared/data-sources.md` — for the conceptual ops and the CRM ID gotcha
+- `${CLAUDE_PLUGIN_ROOT}/shared/output-modes.md` — Live brief default; optional XLSX export for the forecast call
+- `${CLAUDE_PLUGIN_ROOT}/shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
 
 # Default stage-band probability map
 

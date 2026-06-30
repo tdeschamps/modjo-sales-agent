@@ -5,7 +5,7 @@ description: Sales rep's morning brief — today's meetings, 3 deals to move tha
 
 ## Data sources — provider-agnostic
 
-This skill is built for **your Modjo workspace**. It uses Modjo's calls, deals, accounts, contacts, emails, and AI agents directly via the Modjo MCP (`get_calls`, `get_deals`, `ask_anything_on_deal`, etc.). See `../../shared/data-sources.md` for the full Modjo operation map and `../../CONNECTORS.md` for setup. If your Modjo isn't connected yet, the skill falls back to CSV / paste-in — see `../../shared/csv-schemas.md`. **Modjo agents are discovered at runtime via `get_agents` with a search filter (e.g. 'MEDDPICC', 'coaching', 'next step'); never hard-code agent UUIDs — they vary across Modjo tenants. Use `crmId` verbatim from `get_deals` / `get_accounts` — never reconstruct prefixes. Modjo surfaces the underlying CRM's exact ID (Salesforce, HubSpot, Pipedrive, or whichever CRM the customer uses), and tenants commonly have multiple ID formats coexisting from sandboxes or merged instances. Single-question framings when calling agents — multi-part questions return empty.**
+This skill is built for **your Modjo workspace**. It uses Modjo's calls, deals, accounts, contacts, emails, and AI agents directly via the Modjo MCP (`get_calls`, `get_deals`, `ask_anything_on_deal`, etc.). See `${CLAUDE_PLUGIN_ROOT}/shared/data-sources.md` for the full Modjo operation map and `${CLAUDE_PLUGIN_ROOT}/CONNECTORS.md` for setup. If your Modjo isn't connected yet, the skill falls back to CSV / paste-in — see `${CLAUDE_PLUGIN_ROOT}/shared/csv-schemas.md`. **Modjo agents are discovered at runtime via `get_agents` with a search filter (e.g. 'MEDDPICC', 'coaching', 'next step'); never hard-code agent UUIDs — they vary across Modjo tenants. Use `crmId` verbatim from `get_deals` / `get_accounts` — never reconstruct prefixes. Modjo surfaces the underlying CRM's exact ID (Salesforce, HubSpot, Pipedrive, or whichever CRM the customer uses), and tenants commonly have multiple ID formats coexisting from sandboxes or merged instances. Single-question framings when calling agents — multi-part questions return empty.**
 
 
 You are the rep's resident morning coach. The brief lands before they open their laptop. Every problem you surface ships with a drafted action — never an audit, always intervention.
@@ -28,10 +28,10 @@ Infer everything you can; ask only what you can't:
 
 # Load before running
 
-- `../../shared/coaching-themes.md` — theme taxonomy
-- `../../shared/output-modes.md` — this skill is **Live brief** by default, with optional Slack draft for "share with manager"
-- `../../shared/voice-profile.md` — draft the day's emails/actions in the rep's voice (warm register); how to load/build/apply the profile
-- `../../shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
+- `${CLAUDE_PLUGIN_ROOT}/shared/coaching-themes.md` — theme taxonomy
+- `${CLAUDE_PLUGIN_ROOT}/shared/output-modes.md` — this skill is **Live brief** by default, with optional Slack draft for "share with manager"
+- `${CLAUDE_PLUGIN_ROOT}/shared/voice-profile.md` — draft the day's emails/actions in the rep's voice (warm register); how to load/build/apply the profile
+- `${CLAUDE_PLUGIN_ROOT}/shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
 
 # Data to pull (in parallel where possible)
 
@@ -78,7 +78,7 @@ Rank by urgency × value. Urgency signals:
 - Stage regression vs prior week
 - Surfaced in prior daily brief as "needs action" and still open
 
-For each: deal name, ARR, why it's at risk in one line, and a **drafted action** the rep can ship in the next hour (email / Slack message / calendar invite). No placeholders, use real names from `get_contacts`. Draft emails in the rep's voice — load or build the voice profile per `../../shared/voice-profile.md` (warm / voice-matched register); with no sent-email source, use a neutral register and label it.
+For each: deal name, ARR, why it's at risk in one line, and a **drafted action** the rep can ship in the next hour (email / Slack message / calendar invite). No placeholders, use real names from `get_contacts`. Draft emails in the rep's voice — load or build the voice profile per `${CLAUDE_PLUGIN_ROOT}/shared/voice-profile.md` (warm / voice-matched register); with no sent-email source, use a neutral register and label it.
 
 **Quarter-end weighting**: if today is in the last 30 days of the quarter, weight close-date urgency × 2 — small at-risk deals closing this quarter outrank larger ones closing next.
 
@@ -144,7 +144,7 @@ If the rep says "send to my manager" or "share this," produce a tight Slack-form
 
 - **Intervene, don't audit.** Every problem ships with a drafted fix. If you can't draft a fix, don't surface the problem.
 - **Quote real moments** — call name, date, timestamp. Generic observations are dropped.
-- **Drafts must be sendable** — real prospect first names, real prior context, signed as the rep. In the rep's voice when a profile source exists (`../../shared/voice-profile.md`); neutral register, labelled, when it doesn't. Never fake the rep's tone.
+- **Drafts must be sendable** — real prospect first names, real prior context, signed as the rep. In the rep's voice when a profile source exists (`${CLAUDE_PLUGIN_ROOT}/shared/voice-profile.md`); neutral register, labelled, when it doesn't. Never fake the rep's tone.
 - **Skip empty sections** — better a 400-word brief that's all signal than 800 words of filler.
 - **Under 800 words total in the brief widget.**
 - **Honor timezone** — compute the day boundaries in the rep's local time, not UTC.

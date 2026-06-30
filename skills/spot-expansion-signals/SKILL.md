@@ -5,7 +5,7 @@ description: Scan the customer book for upsell or expansion signals — new stak
 
 ## Data sources — provider-agnostic
 
-This skill is built for **your Modjo workspace**. It uses Modjo's calls, deals, accounts, contacts, emails, and AI agents directly via the Modjo MCP (`get_calls`, `get_deals`, `ask_anything_on_deal`, etc.). See `../../shared/data-sources.md` for the full Modjo operation map and `../../CONNECTORS.md` for setup. If your Modjo isn't connected yet, the skill falls back to CSV / paste-in — see `../../shared/csv-schemas.md`. **Modjo agents are discovered at runtime via `get_agents` with a search filter (e.g. 'MEDDPICC', 'coaching', 'next step'); never hard-code agent UUIDs — they vary across Modjo tenants. Use `crmId` verbatim from `get_deals` / `get_accounts` — never reconstruct prefixes. Modjo surfaces the underlying CRM's exact ID (Salesforce, HubSpot, Pipedrive, or whichever CRM the customer uses), and tenants commonly have multiple ID formats coexisting from sandboxes or merged instances. Single-question framings when calling agents — multi-part questions return empty.**
+This skill is built for **your Modjo workspace**. It uses Modjo's calls, deals, accounts, contacts, emails, and AI agents directly via the Modjo MCP (`get_calls`, `get_deals`, `ask_anything_on_deal`, etc.). See `${CLAUDE_PLUGIN_ROOT}/shared/data-sources.md` for the full Modjo operation map and `${CLAUDE_PLUGIN_ROOT}/CONNECTORS.md` for setup. If your Modjo isn't connected yet, the skill falls back to CSV / paste-in — see `${CLAUDE_PLUGIN_ROOT}/shared/csv-schemas.md`. **Modjo agents are discovered at runtime via `get_agents` with a search filter (e.g. 'MEDDPICC', 'coaching', 'next step'); never hard-code agent UUIDs — they vary across Modjo tenants. Use `crmId` verbatim from `get_deals` / `get_accounts` — never reconstruct prefixes. Modjo surfaces the underlying CRM's exact ID (Salesforce, HubSpot, Pipedrive, or whichever CRM the customer uses), and tenants commonly have multiple ID formats coexisting from sandboxes or merged instances. Single-question framings when calling agents — multi-part questions return empty.**
 
 
 You are the team's expansion radar. Most expansion signals are buried in customer conversations that nobody reads twice. Your job is to surface them with enough specificity that the AM/AE can act this week.
@@ -26,10 +26,10 @@ I won't invent expansion signals from thin data. If the customer hasn't said any
 
 # Load before running
 
-- `../../shared/icp-and-personas.md` — to evaluate fit of newly-surfaced stakeholders/BUs
-- `../../shared/coaching-themes.md`
-- `../../shared/output-modes.md` — Live brief + optional Slack draft to the AM
-- `../../shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
+- `${CLAUDE_PLUGIN_ROOT}/shared/icp-and-personas.md` — to evaluate fit of newly-surfaced stakeholders/BUs
+- `${CLAUDE_PLUGIN_ROOT}/shared/coaching-themes.md`
+- `${CLAUDE_PLUGIN_ROOT}/shared/output-modes.md` — Live brief + optional Slack draft to the AM
+- `${CLAUDE_PLUGIN_ROOT}/shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
 
 # Data to pull
 

@@ -5,7 +5,7 @@ description: AE-to-CSM handover package when a deal closes won — use cases pur
 
 ## Data sources — provider-agnostic
 
-This skill is built for **your Modjo workspace**. It uses Modjo's calls, deals, accounts, contacts, emails, and AI agents directly via the Modjo MCP (`get_calls`, `get_deals`, `ask_anything_on_deal`, etc.). See `../../shared/data-sources.md` for the full Modjo operation map and `../../CONNECTORS.md` for setup. If your Modjo isn't connected yet, the skill falls back to CSV / paste-in — see `../../shared/csv-schemas.md`. **Modjo agents are discovered at runtime via `get_agents` with a search filter (e.g. 'MEDDPICC', 'coaching', 'next step'); never hard-code agent UUIDs — they vary across Modjo tenants. Use `crmId` verbatim from `get_deals` / `get_accounts` — never reconstruct prefixes. Modjo surfaces the underlying CRM's exact ID (Salesforce, HubSpot, Pipedrive, or whichever CRM the customer uses), and tenants commonly have multiple ID formats coexisting from sandboxes or merged instances. Single-question framings when calling agents — multi-part questions return empty.**
+This skill is built for **your Modjo workspace**. It uses Modjo's calls, deals, accounts, contacts, emails, and AI agents directly via the Modjo MCP (`get_calls`, `get_deals`, `ask_anything_on_deal`, etc.). See `${CLAUDE_PLUGIN_ROOT}/shared/data-sources.md` for the full Modjo operation map and `${CLAUDE_PLUGIN_ROOT}/CONNECTORS.md` for setup. If your Modjo isn't connected yet, the skill falls back to CSV / paste-in — see `${CLAUDE_PLUGIN_ROOT}/shared/csv-schemas.md`. **Modjo agents are discovered at runtime via `get_agents` with a search filter (e.g. 'MEDDPICC', 'coaching', 'next step'); never hard-code agent UUIDs — they vary across Modjo tenants. Use `crmId` verbatim from `get_deals` / `get_accounts` — never reconstruct prefixes. Modjo surfaces the underlying CRM's exact ID (Salesforce, HubSpot, Pipedrive, or whichever CRM the customer uses), and tenants commonly have multiple ID formats coexisting from sandboxes or merged instances. Single-question framings when calling agents — multi-part questions return empty.**
 
 
 You are the AE-to-CSM relay. A messy handover is the #1 cause of avoidable early churn — the customer feels the seams. The job: give the CSM everything they need to make month 1 land cleanly.
@@ -26,10 +26,10 @@ I'll only include commitments and pain points that have direct evidence (a quote
 
 # Load before running
 
-- `../../shared/using-modjo-mcp.md` — how to use the Modjo MCP: agents for grounded quotes, `get_transcript` is last-resort-only
-- `../../shared/output-modes.md` — persistence contract: the handover package persists to Notion only if a workspace MCP is connected and the user wants it; otherwise to a portable dual-audience (AE + CSM) Markdown artifact in `outputs/`. Live brief + customer-shareable kickoff agenda are always produced.
-- `../../shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
-- `../../shared/qualification-rubric.md` — to extract what was *actually* sold against vs aspirational
+- `${CLAUDE_PLUGIN_ROOT}/shared/using-modjo-mcp.md` — how to use the Modjo MCP: agents for grounded quotes, `get_transcript` is last-resort-only
+- `${CLAUDE_PLUGIN_ROOT}/shared/output-modes.md` — persistence contract: the handover package persists to Notion only if a workspace MCP is connected and the user wants it; otherwise to a portable dual-audience (AE + CSM) Markdown artifact in `outputs/`. Live brief + customer-shareable kickoff agenda are always produced.
+- `${CLAUDE_PLUGIN_ROOT}/shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
+- `${CLAUDE_PLUGIN_ROOT}/shared/qualification-rubric.md` — to extract what was *actually* sold against vs aspirational
 
 # Data to pull
 
@@ -95,7 +95,7 @@ A customer-shareable agenda for the kickoff call. **Anchor the agenda on the spe
 # Output — three artifacts
 
 1. **Live brief (widget)** — for the AE + CSM to read together before the kickoff.
-2. **Persisted handover package (Notion OPTIONAL)** — the persistent reference the CSM works from going forward. **Notion is optional, never required.** Pick the target at runtime (see `../../shared/output-modes.md`):
+2. **Persisted handover package (Notion OPTIONAL)** — the persistent reference the CSM works from going forward. **Notion is optional, never required.** Pick the target at runtime (see `${CLAUDE_PLUGIN_ROOT}/shared/output-modes.md`):
    - **If a workspace MCP is connected and the user wants it there**: write the page under the account's page via `workspace_create_page` (e.g. Notion `notion-create-pages`). Ask before creating if it doesn't already exist.
    - **Otherwise (the default)**: write the portable Markdown artifact to `outputs/hand-off-to-csm-[account-slug]-[YYYY-MM-DD].md`. This handover is naturally dual-audience — the AE knows the deal, the CSM owns month 1 — so structure it per `output-modes.md` with **— For the AE —** and **— For the CSM —** in place of rep/manager: a shared **Summary** (account, ARR, kickoff date, the one-line "what the CSM needs to know in week one"), then **— For the AE —** (open commitments still on the AE to close before/at handover, anything they need to chase), **— For the CSM —** (use cases purchased, what we sold against and explicitly can't do, sticky concerns, expansion signals, who the champion is and what they care about), and **Evidence** (the quoted commitments, pain-in-their-words moments, and stakeholder/cross-company flags). All nine content sections above map into this structure.
 3. **Customer-shareable kickoff agenda** — clean Markdown, no internal jargon, ready to send to the champion as part of the kickoff invite.
@@ -119,7 +119,7 @@ A customer-shareable agenda for the kickoff call. **Anchor the agenda on the spe
 # Rules
 
 - **The "what we sold against" section is non-negotiable.** Most failed handovers happen because the CSM tries to deliver on something the AE never actually sold.
-- **Quote real commitments — from agent citations.** Get specific promises (timelines, features, integrations) from `ask_anything_on_deal` / `ask_anything_on_call` (returns exact words + source). `get_transcript` is a last resort only (see `../../shared/using-modjo-mcp.md`). If you can't get a verbatim commitment, say so — never invent a promise the AE didn't make; a fabricated commitment sets the CSM up to fail.
+- **Quote real commitments — from agent citations.** Get specific promises (timelines, features, integrations) from `ask_anything_on_deal` / `ask_anything_on_call` (returns exact words + source). `get_transcript` is a last resort only (see `${CLAUDE_PLUGIN_ROOT}/shared/using-modjo-mcp.md`). If you can't get a verbatim commitment, say so — never invent a promise the AE didn't make; a fabricated commitment sets the CSM up to fail.
 - **Don't sanitize the sticky concerns.** If a buyer raised pricing pressure or competitive doubt and we managed it but didn't kill it, the CSM needs to know.
 - **The customer-shareable agenda uses customer language**, never "MEDDPICC" or internal stage names.
 - **Champion identification is critical** — name them clearly, what they care about, what they pushed for internally. They're the CSM's #1 ally.

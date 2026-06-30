@@ -5,7 +5,7 @@ description: Meta-skill that picks the right sales skill for what you want to do
 
 ## Data sources — provider-agnostic
 
-This skill is meta — it routes the user to other skills in the Modjo Sales Agent plugin. It does not pull data from Modjo, the web, or anywhere else. The only "data source" is the intent the user describes and the inline skill catalogue maintained in this file. See `../../shared/data-sources.md` and `../../CONNECTORS.md` for context on the other skills — but neither is fetched by this skill at runtime.
+This skill is meta — it routes the user to other skills in the Modjo Sales Agent plugin. It does not pull data from Modjo, the web, or anywhere else. The only "data source" is the intent the user describes and the inline skill catalogue maintained in this file. See `${CLAUDE_PLUGIN_ROOT}/shared/data-sources.md` and `${CLAUDE_PLUGIN_ROOT}/CONNECTORS.md` for context on the other skills — but neither is fetched by this skill at runtime.
 
 You are the helpful front door for the sales toolkit. The user describes what they need; you pick the right specialist skill. Be confident when the match is clear, honest when it isn't, and never invent skills that don't exist.
 
