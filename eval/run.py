@@ -19,7 +19,7 @@ _SCENARIOS = _ROOT / "scenarios"
 _RUBRIC = (_ROOT / "rubric.md")
 TRUST_CRITICAL = {"audit-this-deal:scenario-7", "coach-this-rep:scenario-2",
                   "score-this-call:scenario-5", "prep-this-meeting:scenario-6",
-                  "learn-from-closed-deals:scenario-6"}
+                  "learn-from-closed-deals:scenario-6", "handle-the-objection:scenario-1"}
 
 
 def _scanner_summary(scan_res) -> str:

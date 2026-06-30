@@ -16,10 +16,11 @@ eval/
     ├── coach-this-rep.md           ← 6 scenarios
     ├── score-this-call.md          ← 6 scenarios
     ├── prep-this-meeting.md        ← 6 scenarios
-    └── learn-from-closed-deals.md  ← 7 scenarios
+    ├── learn-from-closed-deals.md  ← 7 scenarios
+    └── handle-the-objection.md     ← 3 scenarios (incl. 1 trust-critical anti-fabrication)
 ```
 
-Total: 32 scenarios across the 5 highest-leverage Modjo-native skills.
+Total: 35 scenarios across the 6 highest-leverage Modjo-native skills.
 
 ## How to run the eval (manual)
 

@@ -4,7 +4,7 @@
   <img src="https://gifrific.com/wp-content/uploads/2014/01/Jordan-Belfort-Pound-Chest-at-Restaurant-The-Wolf-of-Wall-Street.gif" alt="The name of the game: close." width="480">
 </p>
 
-> **Your Modjo data, weaponized.** 20 AI skills that prep your meetings, audit your deals, score your calls, draft your follow-ups, coach your reps, and hunt your expansion — straight off your Modjo conversations. The agent already read every call. Now it does the work.
+> **Your Modjo data, weaponized.** 21 AI skills that prep your meetings, audit your deals, score your calls, draft your follow-ups, handle objections, coach your reps, and hunt your expansion — straight off your Modjo conversations. The agent already read every call. Now it does the work.
 
 **Stop digging through call recordings. Start closing.** Every morning brief, deal audit, pipeline review, and coaching session — pulled from what your buyers *actually said*, drafted and ready, in 90 seconds. No copy-paste. No "what did they say on the last call?" The agent read it. It remembers. It acts.
 
@@ -66,7 +66,7 @@ Three layers, in order of how much capability they unlock:
 
 See `CONNECTORS.md` for the per-connector capability matrix.
 
-## The 20 skills
+## The 21 skills
 
 **Daily rhythm**
 
@@ -84,6 +84,7 @@ See `CONNECTORS.md` for the per-connector capability matrix.
 | `lock-the-close-plan` | `/close-plan [deal]` | Build or refresh the customer-shareable Mutual Action Plan |
 | `unstick-this-deal` | `/stuck-on [deal]` | 90-second tactical answer when a deal is stuck |
 | `score-this-call` | `/score-call [call]` | Score one call + drafted next-time play |
+| `handle-the-objection` | `/handle-objection [objection]` | In-the-moment rebuttal to a buyer's objection — in your voice, grounded in a won-deal precedent; live talk-track or async draft |
 | `write-the-follow-up` | `/follow-up [deal\|call]` | Draft the follow-up email to send — in your voice, grounded in real call commitments; optional threaded Gmail draft |
 
 **Portfolio view**
@@ -179,7 +180,7 @@ Every SKILL.md follows the same pattern:
 
 ## v0.1.0 notes
 
-- 20 skills, all implemented. None are stubs.
+- 21 skills, all implemented. None are stubs.
 - `write-the-follow-up` is the most output-driven skill — its output *is* the email the rep sends. It auto-detects the situation (post-call recap / revival nudge / answer an open question), drafts in the rep's own voice (a persisted, hand-correctable voice profile learned from real sent emails), and — with Gmail connected — drops a threaded draft in the mailbox. Modjo-first; Gmail is optional and draft-only.
 - Methodology rubric stays swappable — ships with MEDDPICC; teams using BANT / SPICED / MEDDIC can swap the file content from `shared/qualification-rubrics/`.
 - `forecast` requires the user to provide a quota — gap analysis without a quota is meaningless, so the skill asks rather than assumes.

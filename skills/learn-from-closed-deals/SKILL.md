@@ -5,7 +5,7 @@ description: Pattern extraction from recently closed deals — what worked, what
 
 ## Data sources — provider-agnostic
 
-This skill is built for **your Modjo workspace**. It uses Modjo's calls, deals, accounts, contacts, emails, and AI agents directly via the Modjo MCP (`get_calls`, `get_deals`, `ask_anything_on_deal`, etc.). See `../../shared/data-sources.md` for the full Modjo operation map and `../../CONNECTORS.md` for setup. If your Modjo isn't connected yet, the skill falls back to CSV / paste-in — see `../../shared/csv-schemas.md`. **Modjo agents are discovered at runtime via `get_agents` with a search filter (e.g. 'MEDDPICC', 'coaching', 'next step'); never hard-code agent UUIDs — they vary across Modjo tenants. Use `crmId` verbatim from `get_deals` / `get_accounts` — never reconstruct prefixes. Modjo surfaces the underlying CRM's exact ID (Salesforce, HubSpot, Pipedrive, or whichever CRM the customer uses), and tenants commonly have multiple ID formats coexisting from sandboxes or merged instances. Single-question framings when calling agents — multi-part questions return empty.**
+This skill is built for **your Modjo workspace**. It uses Modjo's calls, deals, accounts, contacts, emails, and AI agents directly via the Modjo MCP (`get_calls`, `get_deals`, `ask_anything_on_deal`, etc.). See `${CLAUDE_PLUGIN_ROOT}/shared/data-sources.md` for the full Modjo operation map and `${CLAUDE_PLUGIN_ROOT}/CONNECTORS.md` for setup. If your Modjo isn't connected yet, the skill falls back to CSV / paste-in — see `${CLAUDE_PLUGIN_ROOT}/shared/csv-schemas.md`. **Modjo agents are discovered at runtime via `get_agents` with a search filter (e.g. 'MEDDPICC', 'coaching', 'next step'); never hard-code agent UUIDs — they vary across Modjo tenants. Use `crmId` verbatim from `get_deals` / `get_accounts` — never reconstruct prefixes. Modjo surfaces the underlying CRM's exact ID (Salesforce, HubSpot, Pipedrive, or whichever CRM the customer uses), and tenants commonly have multiple ID formats coexisting from sandboxes or merged instances. Single-question framings when calling agents — multi-part questions return empty.**
 
 
 You are the team's structured-retrospective engine. Findings here become the evidence base every other deal-execution skill cites. Half-baked retros pollute the Plays Library — so be strict about evidence and never invent precedents.
@@ -26,12 +26,12 @@ Every play I propose for the team's Plays Library carries the deal name and the 
 
 # Load before running
 
-- `../../shared/using-modjo-mcp.md` — how to use the Modjo MCP: agents for grounded quotes, `get_transcript` is last-resort-only
-- `../../shared/win-loss-interview.md` — the question structure and synthesis template
-- `../../shared/coaching-themes.md` — to tag findings
-- `../../shared/qualification-rubric.md` — for retroactive pillar scoring
-- `../../shared/output-modes.md` — persistence contract: Live brief + an OPTIONAL Plays Library write (Notion if a workspace MCP is connected and the user approves; otherwise a portable Markdown artifact in `outputs/`)
-- `../../shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
+- `${CLAUDE_PLUGIN_ROOT}/shared/using-modjo-mcp.md` — how to use the Modjo MCP: agents for grounded quotes, `get_transcript` is last-resort-only
+- `${CLAUDE_PLUGIN_ROOT}/shared/win-loss-interview.md` — the question structure and synthesis template
+- `${CLAUDE_PLUGIN_ROOT}/shared/coaching-themes.md` — to tag findings
+- `${CLAUDE_PLUGIN_ROOT}/shared/qualification-rubric.md` — for retroactive pillar scoring
+- `${CLAUDE_PLUGIN_ROOT}/shared/output-modes.md` — persistence contract: Live brief + an OPTIONAL Plays Library write (Notion if a workspace MCP is connected and the user approves; otherwise a portable Markdown artifact in `outputs/`)
+- `${CLAUDE_PLUGIN_ROOT}/shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
 
 # Data to pull
 
@@ -129,7 +129,7 @@ Candidate plays for the Plays Library. Each: name, theme, when-to-use trigger, e
 
 # Persisting net-new plays (Notion OPTIONAL)
 
-The Plays Library write stays **approval-gated** exactly as in the widget — the user confirms each play before anything is persisted. **Notion is optional, never required.** Once the user confirms, pick the target at runtime (see `../../shared/output-modes.md`):
+The Plays Library write stays **approval-gated** exactly as in the widget — the user confirms each play before anything is persisted. **Notion is optional, never required.** Once the user confirms, pick the target at runtime (see `${CLAUDE_PLUGIN_ROOT}/shared/output-modes.md`):
 
 - **If a workspace MCP is connected and the user wants it there**: `workspace_create_page` (e.g. Notion `notion-create-pages`) to append to the Plays Library database, one row per net-new play. Reference deals as evidence with their crmLinks.
 - **Otherwise (the default)**: append the confirmed plays to the portable Markdown artifact at `outputs/learn-from-closed-deals-[scope]-[YYYY-MM-DD].md`. Structure it dual-audience per `output-modes.md` — a shared **Summary** (the pattern of the period, counts, win rate), then **— For the rep —** (the plays they can run now and the anti-patterns to avoid on live deals), **— For the manager —** (the cross-deal patterns, data-hygiene flags like null lossReasons, and where to coach), and **Evidence** (per-play: name, theme, when-to-use trigger, and the real deals + verbatim quoted moments backing it). This portable file is itself a Plays Library that the next run reads for dedup.
@@ -141,7 +141,7 @@ Either way: only confirmed plays are written, only plays meeting the 2-/3-deal t
 - **Never claim a pattern from 1 deal.** A pattern needs ≥2 deals.
 - **"No shared pattern" is a valid — and often correct — verdict.** When the deals are genuinely varied (different segments, sizes, sources, failure modes), the right output is "**No shared pattern across these deals — varied segments/sizes/sources**" plus per-deal retros, and **zero** proposed Plays Library entries. Do NOT manufacture a unifying theme to fill the verdict slot. Forcing an abstraction ("they all involved single-threading / relationship-selling") across unrelated deals to have something to say is fabrication and the worst failure mode of this skill — bad plays pollute every downstream skill that cites them.
 - **CRM contact-count is NOT pattern evidence.** A shared shape claimed only from counting CRM contacts (e.g. "all single-threaded") does not qualify as a pattern, especially on deals where the analysis agent returned empty. Pattern claims need call/agent evidence per deal, not a structural proxy. If the agent was empty for a deal, that deal cannot support a cross-deal pattern — say "insufficient evidence" rather than inferring the shape from contact records.
-- **Quotes must be verbatim — from agent citations.** Get load-bearing quotes from `ask_anything_on_deal` / `ask_anything_on_call` (returns exact words + source). `get_transcript` is a last resort only (see `../../shared/using-modjo-mcp.md`). If you can't get a real verbatim quote, drop it — never approximate or invent one (bad quotes pollute the Plays Library).
+- **Quotes must be verbatim — from agent citations.** Get load-bearing quotes from `ask_anything_on_deal` / `ask_anything_on_call` (returns exact words + source). `get_transcript` is a last resort only (see `${CLAUDE_PLUGIN_ROOT}/shared/using-modjo-mcp.md`). If you can't get a real verbatim quote, drop it — never approximate or invent one (bad quotes pollute the Plays Library).
 - **"Loss reason was X" is a hypothesis until confirmed by call evidence.** CRM fields are often wrong.
 - **Customer interviews beat data analysis** — if the rep has time, draft outreach to 2–3 buyers (won + lost) and surface real qualitative input. The skill outputs the drafted email; the rep decides whether to send.
 - **Plays Library is a slow accumulator** — don't bulk-add 10 plays in week one. Quality > quantity. 1–3 per batch is healthy.

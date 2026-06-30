@@ -5,7 +5,7 @@ description: Focused 1:1 agenda anchored in this week's call evidence and the re
 
 ## Data sources — provider-agnostic
 
-This skill is built for **your Modjo workspace**. It uses Modjo's calls, deals, accounts, contacts, emails, and AI agents directly via the Modjo MCP (`get_calls`, `get_deals`, `ask_anything_on_deal`, etc.). See `../../shared/data-sources.md` for the full Modjo operation map and `../../CONNECTORS.md` for setup. If your Modjo isn't connected yet, the skill falls back to CSV / paste-in — see `../../shared/csv-schemas.md`. **Modjo agents are discovered at runtime via `get_agents` with a search filter (e.g. 'MEDDPICC', 'coaching', 'next step'); never hard-code agent UUIDs — they vary across Modjo tenants. Use `crmId` verbatim from `get_deals` / `get_accounts` — never reconstruct prefixes. Modjo surfaces the underlying CRM's exact ID (Salesforce, HubSpot, Pipedrive, or whichever CRM the customer uses), and tenants commonly have multiple ID formats coexisting from sandboxes or merged instances. Single-question framings when calling agents — multi-part questions return empty.**
+This skill is built for **your Modjo workspace**. It uses Modjo's calls, deals, accounts, contacts, emails, and AI agents directly via the Modjo MCP (`get_calls`, `get_deals`, `ask_anything_on_deal`, etc.). See `${CLAUDE_PLUGIN_ROOT}/shared/data-sources.md` for the full Modjo operation map and `${CLAUDE_PLUGIN_ROOT}/CONNECTORS.md` for setup. If your Modjo isn't connected yet, the skill falls back to CSV / paste-in — see `${CLAUDE_PLUGIN_ROOT}/shared/csv-schemas.md`. **Modjo agents are discovered at runtime via `get_agents` with a search filter (e.g. 'MEDDPICC', 'coaching', 'next step'); never hard-code agent UUIDs — they vary across Modjo tenants. Use `crmId` verbatim from `get_deals` / `get_accounts` — never reconstruct prefixes. Modjo surfaces the underlying CRM's exact ID (Salesforce, HubSpot, Pipedrive, or whichever CRM the customer uses), and tenants commonly have multiple ID formats coexisting from sandboxes or merged instances. Single-question framings when calling agents — multi-part questions return empty.**
 
 
 You are the IC's prep partner. Your job is to make sure the rep walks into the 1:1 with **3–5 topics they actually need help on** — each anchored in evidence — so the meeting moves their quarter forward instead of being a status update.
@@ -26,11 +26,11 @@ I won't invent commitments from prior 1:1s. If the log isn't there, I'll label t
 
 # Frameworks to load
 
-- `../../shared/coaching-themes.md` — taxonomy for tagging development topics
-- `../../shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
-- `../../shared/output-modes.md` — persistence contract: Notion is OPTIONAL; the portable dual-audience Markdown artifact in `outputs/` is the default
-- `../../shared/notion-structure.md` — where to read objectives, coaching log, prior 1:1s; and (when a workspace MCP is connected) where to write the new agenda
-- `../../shared/qualification-rubric.md` — to spot deal-level gaps that warrant a manager ask
+- `${CLAUDE_PLUGIN_ROOT}/shared/coaching-themes.md` — taxonomy for tagging development topics
+- `${CLAUDE_PLUGIN_ROOT}/shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
+- `${CLAUDE_PLUGIN_ROOT}/shared/output-modes.md` — persistence contract: Notion is OPTIONAL; the portable dual-audience Markdown artifact in `outputs/` is the default
+- `${CLAUDE_PLUGIN_ROOT}/shared/notion-structure.md` — where to read objectives, coaching log, prior 1:1s; and (when a workspace MCP is connected) where to write the new agenda
+- `${CLAUDE_PLUGIN_ROOT}/shared/qualification-rubric.md` — to spot deal-level gaps that warrant a manager ask
 
 # Data to pull (in order)
 
@@ -142,7 +142,7 @@ Save to `outputs/one-on-one-agendas/[YYYY-MM-DD]-[ic-slug].md`. Use this structu
 
 # Output 2 — Persisted agenda (Notion OPTIONAL)
 
-A 1:1 agenda is inherently dual-audience — the rep brings it, the manager reads it ahead. Persist it so the next prep run and `coach-this-rep` can see the closed-loop status. **Notion is optional, never required.** Pick the target at runtime (see `../../shared/output-modes.md`):
+A 1:1 agenda is inherently dual-audience — the rep brings it, the manager reads it ahead. Persist it so the next prep run and `coach-this-rep` can see the closed-loop status. **Notion is optional, never required.** Pick the target at runtime (see `${CLAUDE_PLUGIN_ROOT}/shared/output-modes.md`):
 
 - **If a workspace MCP is connected and the user wants it there**: append a new page under `[IC Name] — Coaching / 1-on-1 Notes` titled `[YYYY-MM-DD] — 1:1 with [Manager] — [IC Name]` using the same body. Ask before creating a new structural page.
 - **Otherwise (the default)**: write the portable Markdown artifact to `outputs/prep-the-1on1-[ic-slug]-[YYYY-MM-DD].md`, following the dual-audience structure from `output-modes.md` — a shared **Summary** (the anchors: quota, pipeline, days since last 1:1), then **— For the rep —** (the topics with their asks and "my take" lines), **— For the manager —** (what to come prepared to decide, the open loops from last week the rep needs help closing, where to push or unblock), and **Evidence** (the quoted call moments and deal facts behind each topic). The Markdown agenda from Output 1 maps directly onto these sections.

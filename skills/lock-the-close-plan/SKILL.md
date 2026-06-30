@@ -5,7 +5,7 @@ description: Build or refresh a Mutual Action Plan — co-owned dated path from 
 
 ## Data sources — provider-agnostic
 
-This skill is built for **your Modjo workspace**. It uses Modjo's calls, deals, accounts, contacts, emails, and AI agents directly via the Modjo MCP (`get_calls`, `get_deals`, `ask_anything_on_deal`, etc.). See `../../shared/data-sources.md` for the full Modjo operation map and `../../CONNECTORS.md` for setup. If your Modjo isn't connected yet, the skill falls back to CSV / paste-in — see `../../shared/csv-schemas.md`. **Modjo agents are discovered at runtime via `get_agents` with a search filter (e.g. 'MEDDPICC', 'coaching', 'next step'); never hard-code agent UUIDs — they vary across Modjo tenants. Use `crmId` verbatim from `get_deals` / `get_accounts` — never reconstruct prefixes. Modjo surfaces the underlying CRM's exact ID (Salesforce, HubSpot, Pipedrive, or whichever CRM the customer uses), and tenants commonly have multiple ID formats coexisting from sandboxes or merged instances. Single-question framings when calling agents — multi-part questions return empty.**
+This skill is built for **your Modjo workspace**. It uses Modjo's calls, deals, accounts, contacts, emails, and AI agents directly via the Modjo MCP (`get_calls`, `get_deals`, `ask_anything_on_deal`, etc.). See `${CLAUDE_PLUGIN_ROOT}/shared/data-sources.md` for the full Modjo operation map and `${CLAUDE_PLUGIN_ROOT}/CONNECTORS.md` for setup. If your Modjo isn't connected yet, the skill falls back to CSV / paste-in — see `${CLAUDE_PLUGIN_ROOT}/shared/csv-schemas.md`. **Modjo agents are discovered at runtime via `get_agents` with a search filter (e.g. 'MEDDPICC', 'coaching', 'next step'); never hard-code agent UUIDs — they vary across Modjo tenants. Use `crmId` verbatim from `get_deals` / `get_accounts` — never reconstruct prefixes. Modjo surfaces the underlying CRM's exact ID (Salesforce, HubSpot, Pipedrive, or whichever CRM the customer uses), and tenants commonly have multiple ID formats coexisting from sandboxes or merged instances. Single-question framings when calling agents — multi-part questions return empty.**
 
 
 You are the rep's close-plan architect. A real MAP — dated, co-owned, customer-shareable — is the single most powerful artifact in late-stage enterprise sales. Output is not internal opinion: it's something the rep can send to their champion this afternoon.
@@ -27,10 +27,10 @@ The MAP is co-owned — I draft it from your side, you share it with the champio
 
 # Load before running
 
-- `../../shared/mutual-action-plan-template.md` — the structural template (header, plan table, signers, risks, cadence)
-- `../../shared/qualification-rubric.md` — to identify pillar gaps that become plan rows
-- `../../shared/output-modes.md` — persistence contract: the internal MAP persists to Notion only if a workspace MCP is connected and the user wants it; otherwise to a portable dual-audience Markdown artifact in `outputs/`. The customer-shareable Markdown is always produced.
-- `../../shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
+- `${CLAUDE_PLUGIN_ROOT}/shared/mutual-action-plan-template.md` — the structural template (header, plan table, signers, risks, cadence)
+- `${CLAUDE_PLUGIN_ROOT}/shared/qualification-rubric.md` — to identify pillar gaps that become plan rows
+- `${CLAUDE_PLUGIN_ROOT}/shared/output-modes.md` — persistence contract: the internal MAP persists to Notion only if a workspace MCP is connected and the user wants it; otherwise to a portable dual-audience Markdown artifact in `outputs/`. The customer-shareable Markdown is always produced.
+- `${CLAUDE_PLUGIN_ROOT}/shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
 
 # Data to pull
 
@@ -105,7 +105,7 @@ Each row in the plan table carries these columns:
 **Two artifacts, both rendered:**
 
 ### 1. Internal MAP — persisted (Notion OPTIONAL)
-The internal version keeps a "Source" column on every plan row (call id or email subject) so the rep can verify provenance, plus the MEDDPICC-derived rationale. **Notion is optional, never required.** Pick the target at runtime (see `../../shared/output-modes.md`):
+The internal version keeps a "Source" column on every plan row (call id or email subject) so the rep can verify provenance, plus the MEDDPICC-derived rationale. **Notion is optional, never required.** Pick the target at runtime (see `${CLAUDE_PLUGIN_ROOT}/shared/output-modes.md`):
 
 - **If a workspace MCP is connected and the user wants it there**: create the page under the deal's account page via `workspace_create_page` (e.g. Notion `notion-create-pages`). Ask before creating if the page doesn't already exist.
 - **Otherwise (the default)**: write the portable Markdown artifact to `outputs/lock-the-close-plan-[deal-slug]-[YYYY-MM-DD].md`, following the dual-audience structure from `output-modes.md` — a shared **Summary** (deal, target close, days remaining, the critical-path sentence), then **— For the rep —** (the immediate next moves, which rows to re-confirm in writing, what to chase), **— For the manager —** (the health/risk call, MEDDPICC gaps that need escalation or deal-desk/exec sponsorship, slip risk on the close date), and **Evidence** (the full Source-tagged plan table and the commitment quotes). Keep the "Source" column here so provenance survives.

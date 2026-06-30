@@ -5,7 +5,7 @@ description: Weekly portfolio triage — hot/watch/at-risk/disqualify buckets, h
 
 ## Data sources — provider-agnostic
 
-This skill is built for **your Modjo workspace**. It uses Modjo's calls, deals, accounts, contacts, emails, and AI agents directly via the Modjo MCP (`get_calls`, `get_deals`, `ask_anything_on_deal`, etc.). See `../../shared/data-sources.md` for the full Modjo operation map and `../../CONNECTORS.md` for setup. If your Modjo isn't connected yet, the skill falls back to CSV / paste-in — see `../../shared/csv-schemas.md`. **Modjo agents are discovered at runtime via `get_agents` with a search filter (e.g. 'MEDDPICC', 'coaching', 'next step'); never hard-code agent UUIDs — they vary across Modjo tenants. Use `crmId` verbatim from `get_deals` / `get_accounts` — never reconstruct prefixes. Modjo surfaces the underlying CRM's exact ID (Salesforce, HubSpot, Pipedrive, or whichever CRM the customer uses), and tenants commonly have multiple ID formats coexisting from sandboxes or merged instances. Single-question framings when calling agents — multi-part questions return empty.**
+This skill is built for **your Modjo workspace**. It uses Modjo's calls, deals, accounts, contacts, emails, and AI agents directly via the Modjo MCP (`get_calls`, `get_deals`, `ask_anything_on_deal`, etc.). See `${CLAUDE_PLUGIN_ROOT}/shared/data-sources.md` for the full Modjo operation map and `${CLAUDE_PLUGIN_ROOT}/CONNECTORS.md` for setup. If your Modjo isn't connected yet, the skill falls back to CSV / paste-in — see `${CLAUDE_PLUGIN_ROOT}/shared/csv-schemas.md`. **Modjo agents are discovered at runtime via `get_agents` with a search filter (e.g. 'MEDDPICC', 'coaching', 'next step'); never hard-code agent UUIDs — they vary across Modjo tenants. Use `crmId` verbatim from `get_deals` / `get_accounts` — never reconstruct prefixes. Modjo surfaces the underlying CRM's exact ID (Salesforce, HubSpot, Pipedrive, or whichever CRM the customer uses), and tenants commonly have multiple ID formats coexisting from sandboxes or merged instances. Single-question framings when calling agents — multi-part questions return empty.**
 
 
 You are running a weekly pipeline review with the rep — or the rep is reviewing their own. The job is hard prioritization: which deals get attention, which get disqualified, which need help from the manager. Honest scoring beats optimistic stacking.
@@ -26,11 +26,11 @@ I'll never silently drop deals — every open deal on your book is either in a t
 
 # Load before running
 
-- `../../shared/qualification-rubric.md`
-- `../../shared/coaching-themes.md`
-- `../../shared/output-modes.md` — Live brief default; optional Notion log for the manager-led case
-- `../../shared/voice-profile.md` — to draft the at-risk nudge in the rep's voice (warm register)
-- `../../shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
+- `${CLAUDE_PLUGIN_ROOT}/shared/qualification-rubric.md`
+- `${CLAUDE_PLUGIN_ROOT}/shared/coaching-themes.md`
+- `${CLAUDE_PLUGIN_ROOT}/shared/output-modes.md` — Live brief default; optional Notion log for the manager-led case
+- `${CLAUDE_PLUGIN_ROOT}/shared/voice-profile.md` — to draft the at-risk nudge in the rep's voice (warm register)
+- `${CLAUDE_PLUGIN_ROOT}/shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
 
 # Data to pull
 
@@ -92,7 +92,7 @@ The single most important thing about this pipeline state right now.
 ### At risk (🔴) — disqualify or rescue this week
 Card per deal: name, ARR, days inactive, why it's red, and a single specific action (disqualify / book the unstick call / escalate to manager).
 
-For the **top 1–2 red deals where the right move is a buyer touch** (re-engage a silent champion, confirm a slipped step), don't just name the action — **draft it as a sendable message** in the rep's voice per `../../shared/voice-profile.md` (warm register; neutral + labelled if no sent-email source), grounded in a real quoted call/email moment (`ask_anything_on_deal` citation), real recipient first name, no placeholders. If the right move is disqualify or escalate (not a buyer touch), no draft — name the move. Cap at 2 drafts so the review stays scannable; the rep can hand any draft to `/follow-up` to drop into Gmail.
+For the **top 1–2 red deals where the right move is a buyer touch** (re-engage a silent champion, confirm a slipped step), don't just name the action — **draft it as a sendable message** in the rep's voice per `${CLAUDE_PLUGIN_ROOT}/shared/voice-profile.md` (warm register; neutral + labelled if no sent-email source), grounded in a real quoted call/email moment (`ask_anything_on_deal` citation), real recipient first name, no placeholders. If the right move is disqualify or escalate (not a buyer touch), no draft — name the move. Cap at 2 drafts so the review stays scannable; the rep can hand any draft to `/follow-up` to drop into Gmail.
 
 ### Hot (🟢) — protect the momentum
 Card per deal: name, ARR, what's working, what to keep doing. Don't over-engineer wins.
@@ -136,7 +136,7 @@ Top 3 deals to spend most time on, in order. Why each.
 - **Conviction signals come from real data** — recent buyer-initiated touches, mapped stakeholders, quoted commitments. Not stage labels.
 - **Don't assert a clean bill you can't verify.** Statements like "0 past close" or "nothing overdue" are claims — only make them if you actually checked close dates/activity for the deals in question. If call-recency or data is limited, say "no overdue deals found in the data checked" — never present an unverified clean status as fact.
 - **Silent / auto-dated deals get triaged, not hidden.** Deals with no recent activity and a suspicious auto-set close date must each land in a bucket or be explicitly flagged "ambiguous — needs rep confirmation." Do not aggregate them into a single "CRM hygiene" line that lets ~25 real deals disappear from the review.
-- **The top red deals ship a draft, not just a verdict.** For the top 1–2 at-risk deals whose right move is a buyer touch, draft a sendable nudge in the rep's voice (per `../../shared/voice-profile.md`), grounded in a quoted moment. Cap at 2 so the triage stays scannable; disqualify/escalate moves get named, not drafted. Never invent a commitment to make a nudge land.
+- **The top red deals ship a draft, not just a verdict.** For the top 1–2 at-risk deals whose right move is a buyer touch, draft a sendable nudge in the rep's voice (per `${CLAUDE_PLUGIN_ROOT}/shared/voice-profile.md`), grounded in a quoted moment. Cap at 2 so the triage stays scannable; disqualify/escalate moves get named, not drafted. Never invent a commitment to make a nudge land.
 - **Concentration risk matters** — if 60%+ of forecast sits in 1–2 deals, flag it.
 - **Under 1000 words in the widget.**
 - **Manager-led mode is not just gentler in tone** — it surfaces only the top 5 deals that matter for this rep this week + one explicit "what does the rep need from you" section. A 50-deal triage is for the IC; a manager wants the high-leverage subset.

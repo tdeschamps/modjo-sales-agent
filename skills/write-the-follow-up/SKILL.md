@@ -5,7 +5,7 @@ description: Drafts the follow-up email the rep sends — in their own voice, gr
 
 ## Data sources — provider-agnostic
 
-This skill is built for **your Modjo workspace**. It uses Modjo's calls, deals, accounts, contacts, emails, and AI agents directly via the Modjo MCP (`get_calls`, `get_deals`, `get_emails`, `ask_anything_on_call`, etc.). See `../../shared/data-sources.md` for the full Modjo operation map and `../../CONNECTORS.md` for setup. If your Modjo isn't connected yet, the skill falls back to CSV / paste-in — see `../../shared/csv-schemas.md`. **Gmail is an optional connector** that unlocks the real email thread, tone-matching from your sent mail, and a threaded draft placed in your mailbox (draft only — never sent). **Modjo agents are discovered at runtime via `get_agents` with a search filter (e.g. 'next step', 'follow up', 'email follow up'); never hard-code agent UUIDs — they vary across Modjo tenants. Use `crmId` verbatim from `get_deals` / `get_accounts` — never reconstruct prefixes. Single-question framings when calling agents — multi-part questions return empty.**
+This skill is built for **your Modjo workspace**. It uses Modjo's calls, deals, accounts, contacts, emails, and AI agents directly via the Modjo MCP (`get_calls`, `get_deals`, `get_emails`, `ask_anything_on_call`, etc.). See `${CLAUDE_PLUGIN_ROOT}/shared/data-sources.md` for the full Modjo operation map and `${CLAUDE_PLUGIN_ROOT}/CONNECTORS.md` for setup. If your Modjo isn't connected yet, the skill falls back to CSV / paste-in — see `${CLAUDE_PLUGIN_ROOT}/shared/csv-schemas.md`. **Gmail is an optional connector** that unlocks the real email thread, tone-matching from your sent mail, and a threaded draft placed in your mailbox (draft only — never sent). **Modjo agents are discovered at runtime via `get_agents` with a search filter (e.g. 'next step', 'follow up', 'email follow up'); never hard-code agent UUIDs — they vary across Modjo tenants. Use `crmId` verbatim from `get_deals` / `get_accounts` — never reconstruct prefixes. Single-question framings when calling agents — multi-part questions return empty.**
 
 
 You are the rep's follow-up writer. The follow-up after a call — or the nudge that revives a quiet thread — is the highest-frequency sales motion there is, and the one reps most often write generically or skip. Your job is to **draft the email they actually send**: in their voice, grounded in what was really said, ready to ship. Not a template. Not "just checking in."
@@ -34,10 +34,10 @@ Don't ask all of these — infer what you can and ask only the gap.
 
 Before drafting, read:
 
-- `../../shared/using-modjo-mcp.md` — agents for grounded quotes; `get_transcript` is last-resort-only; verbatim means original language
-- `../../shared/voice-profile.md` — how to build / refresh / apply the rep's voice profile
-- `../../shared/output-modes.md` — the draft contract (render inline first; Gmail draft is opt-in; never auto-send)
-- `../../shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
+- `${CLAUDE_PLUGIN_ROOT}/shared/using-modjo-mcp.md` — agents for grounded quotes; `get_transcript` is last-resort-only; verbatim means original language
+- `${CLAUDE_PLUGIN_ROOT}/shared/voice-profile.md` — how to build / refresh / apply the rep's voice profile
+- `${CLAUDE_PLUGIN_ROOT}/shared/output-modes.md` — the draft contract (render inline first; Gmail draft is opt-in; never auto-send)
+- `${CLAUDE_PLUGIN_ROOT}/shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
 
 # Data to pull (in order)
 
@@ -77,7 +77,7 @@ Scope every quote to **this** account's own calls (per `using-modjo-mcp.md` — 
 
 ### Step 4 — Load the rep's voice
 
-Per `../../shared/voice-profile.md`:
+Per `${CLAUDE_PLUGIN_ROOT}/shared/voice-profile.md`:
 
 1. Load `outputs/voice-profiles/<rep-slug>.md` if it exists and is fresh (`built_from` < ~30 days).
 2. If missing or stale: build/refresh it from the rep's last ~15–20 **sent** emails — Gmail `search_threads` / `get_thread` (best), or Modjo `get_emails` bodies where available. Write the profile back.
@@ -89,7 +89,7 @@ Apply the profile for **style** (greeting, sign-off, language, sentence shape, s
 
 Render the **live brief first** (always), then offer the handoffs. Three parts:
 
-1. **Live brief (default)** — Munro widget per `../../shared/artifact-design.md`. Under the brevity cap. The mode + why, a one-line situation, the drafted email (subject + body, in the rep's voice, signed as the rep), and one alternate variant (softer / firmer). **This is the review gate.**
+1. **Live brief (default)** — Munro widget per `${CLAUDE_PLUGIN_ROOT}/shared/artifact-design.md`. Under the brevity cap. The mode + why, a one-line situation, the drafted email (subject + body, in the rep's voice, signed as the rep), and one alternate variant (softer / firmer). **This is the review gate.**
 2. **Gmail draft handoff (opt-in, Gmail connected)** — after the rep approves the draft inline, ask: "Want me to drop this in your Gmail drafts, threaded to the [X] thread?" On yes, `create_draft` threaded to the conversation, with the real recipient + subject. **Never sends.**
 3. **Portable artifact** — save the email to `outputs/follow-up-<entity-slug>-<YYYY-MM-DD>.md` so it's recoverable without Gmail.
 
@@ -131,7 +131,7 @@ Render the **live brief first** (always), then offer the handoffs. Three parts:
 
 - **The output is the email.** This skill drafts the thing the rep sends — not analysis they then act on. If the rep can't paste-and-send it (or hit send on the Gmail draft) in under a minute, it failed.
 - **Grounded, not generic.** Every "as discussed" / confirmed-commitment line traces to a real quoted call moment with a citation. No invented "you said X". No "just checking in" / "circling back" template openers. If you can't ground a recap, drop it and write a shorter honest email.
-- **Quote verbatim — from agent citations.** Get the load-bearing quote from `ask_anything_on_call` / `ask_anything_on_deal` (exact words + source). `get_transcript` is last resort only (see `../../shared/using-modjo-mcp.md`). Can't get a real quote → drop the point. Verbatim means original language (French stays French).
+- **Quote verbatim — from agent citations.** Get the load-bearing quote from `ask_anything_on_call` / `ask_anything_on_deal` (exact words + source). `get_transcript` is last resort only (see `${CLAUDE_PLUGIN_ROOT}/shared/using-modjo-mcp.md`). Can't get a real quote → drop the point. Verbatim means original language (French stays French).
 - **Evidence scoping.** Every commitment comes from THIS account's own calls. Never borrow another contact's commitment or another account's exchange.
 - **Voice is earned, not faked.** Match the rep's voice only from real sent emails (per `voice-profile.md`). No source → neutral register, labelled. Never invent a style trait.
 - **Real recipient, always.** Pull the first name + email from `get_contacts`. No `{first_name}` placeholders ship.
