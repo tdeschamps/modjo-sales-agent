@@ -91,6 +91,7 @@ The Modjo MCP already exposes `get_calendar_events` for connected calendars. If 
 | `learn-from-similar-deals` | Closed-deal corpus with quoted moments | + team Plays Library citations | Rep names comparable deals; starter plays only |
 | `lock-the-close-plan` | MAP built from call evidence | + persistent MAP under account page | Rep dictates commitments |
 | `unstick-this-deal` | Full with call evidence | + team Plays Library precedent | Paste-in only; starter plays only |
+| `handle-the-objection` | Verbatim objection + won-deal precedent reframe, voiced | (+ Gmail) voice-matched async draft + threaded mailbox draft | Paste the objection; starter-play reframe only |
 | `score-this-call` | Full with scoring agent | + persistent score log | Rep pastes transcript or notes |
 | `write-the-follow-up` | Grounded draft, mode auto-detected, neutral register | (+ Gmail) voice-matched draft + threaded mailbox draft | Rep pastes the thread / call notes |
 | `review-the-pipeline` | Triage with deal-health overlay | + persistent weekly review log | CSV paste-in |
