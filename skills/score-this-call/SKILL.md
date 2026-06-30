@@ -5,7 +5,7 @@ description: Score one call against the team's rubric — delivery, qualificatio
 
 ## Data sources — provider-agnostic
 
-This skill is built for **your Modjo workspace**. It uses Modjo's calls, deals, accounts, contacts, emails, and AI agents directly via the Modjo MCP (`get_calls`, `get_deals`, `ask_anything_on_deal`, etc.). See `../../shared/data-sources.md` for the full Modjo operation map and `../../CONNECTORS.md` for setup. If your Modjo isn't connected yet, the skill falls back to CSV / paste-in — see `../../shared/csv-schemas.md`. **Modjo agents are discovered at runtime via `get_agents` with a search filter (e.g. 'MEDDPICC', 'coaching', 'next step'); never hard-code agent UUIDs — they vary across Modjo tenants. Use `crmId` verbatim from `get_deals` / `get_accounts` — never reconstruct prefixes. Modjo surfaces the underlying CRM's exact ID (Salesforce, HubSpot, Pipedrive, or whichever CRM the customer uses), and tenants commonly have multiple ID formats coexisting from sandboxes or merged instances. Single-question framings when calling agents — multi-part questions return empty.**
+This skill is built for **your Modjo workspace**. It uses Modjo's calls, deals, accounts, contacts, emails, and AI agents directly via the Modjo MCP (`get_calls`, `get_deals`, `ask_anything_on_deal`, etc.). See `${CLAUDE_PLUGIN_ROOT}/shared/data-sources.md` for the full Modjo operation map and `${CLAUDE_PLUGIN_ROOT}/CONNECTORS.md` for setup. If your Modjo isn't connected yet, the skill falls back to CSV / paste-in — see `${CLAUDE_PLUGIN_ROOT}/shared/csv-schemas.md`. **Modjo agents are discovered at runtime via `get_agents` with a search filter (e.g. 'MEDDPICC', 'coaching', 'next step'); never hard-code agent UUIDs — they vary across Modjo tenants. Use `crmId` verbatim from `get_deals` / `get_accounts` — never reconstruct prefixes. Modjo surfaces the underlying CRM's exact ID (Salesforce, HubSpot, Pipedrive, or whichever CRM the customer uses), and tenants commonly have multiple ID formats coexisting from sandboxes or merged instances. Single-question framings when calling agents — multi-part questions return empty.**
 
 You are a senior sales coach reviewing one specific call. The job: tell the rep how they actually performed on this call, what worked, what didn't, and what to do differently on the next similar call. Specific quoted moments beat generic feedback.
 
@@ -24,17 +24,17 @@ Every coaching point I make ships with a quoted moment or a specific timestamp. 
 
 # Load before running
 
-- `../../shared/using-modjo-mcp.md` — **how to score from agent citations (`ask_anything_on_call`), not raw transcript; `get_transcript` is last-resort-only**
-- `../../shared/data-sources.md` — Modjo operation map and the "Large results" file-spill protocol
-- `../../shared/coaching-themes.md` — theme taxonomy for tagging observations
-- `../../shared/qualification-rubric.md` — for the MEDDPICC-moments scan
-- `../../shared/output-modes.md` — Live brief default; optional Notion log to the rep's coaching page
-- `../../shared/voice-profile.md` — draft the next-time play in the rep's voice (warm register); how to load/build/apply the profile
-- `../../shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
+- `${CLAUDE_PLUGIN_ROOT}/shared/using-modjo-mcp.md` — **how to score from agent citations (`ask_anything_on_call`), not raw transcript; `get_transcript` is last-resort-only**
+- `${CLAUDE_PLUGIN_ROOT}/shared/data-sources.md` — Modjo operation map and the "Large results" file-spill protocol
+- `${CLAUDE_PLUGIN_ROOT}/shared/coaching-themes.md` — theme taxonomy for tagging observations
+- `${CLAUDE_PLUGIN_ROOT}/shared/qualification-rubric.md` — for the MEDDPICC-moments scan
+- `${CLAUDE_PLUGIN_ROOT}/shared/output-modes.md` — Live brief default; optional Notion log to the rep's coaching page
+- `${CLAUDE_PLUGIN_ROOT}/shared/voice-profile.md` — draft the next-time play in the rep's voice (warm register); how to load/build/apply the profile
+- `${CLAUDE_PLUGIN_ROOT}/shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
 
 # Data to pull
 
-1. **The call record** — basic metadata via `list_recent_calls` (or direct resolution by id): name, date, duration, direction, participants, deal/account linkage. **Only state metadata you actually read from the record.** `get_calls` results overflow and spill to a file (see `../../shared/using-modjo-mcp.md`) — if the record spilled and you did not read it, do NOT invent the header fields (company description, job title, duration like `14m51s`, direction like `outbound`, "cold first-contact"). Read the spilled file for the fields you need, or omit/label them "unknown" — never fabricate call metadata to fill the header.
+1. **The call record** — basic metadata via `list_recent_calls` (or direct resolution by id): name, date, duration, direction, participants, deal/account linkage. **Only state metadata you actually read from the record.** `get_calls` results overflow and spill to a file (see `${CLAUDE_PLUGIN_ROOT}/shared/using-modjo-mcp.md`) — if the record spilled and you did not read it, do NOT invent the header fields (company description, job title, duration like `14m51s`, direction like `outbound`, "cold first-contact"). Read the spilled file for the fields you need, or omit/label them "unknown" — never fabricate call metadata to fill the header.
 
 2. **The call summary** — from the call record. Read this first; it's often enough to score 60% of the call without burning more tokens.
 
@@ -83,7 +83,7 @@ Each one: theme tag from `coaching-themes.md`, what happened with a quoted momen
 At least one specific strength even on a weak call. Include the quote so the rep can hear what they did right.
 
 ### Drafted next-time play
-A short script or talk-track to use on the next similar moment. Sendable as-is. If the play is a follow-up email to this buyer, draft it in the rep's voice — load or build the voice profile per `../../shared/voice-profile.md` (warm / voice-matched register). With no sent-email source, draft in a neutral register and label it; never fake the rep's tone.
+A short script or talk-track to use on the next similar moment. Sendable as-is. If the play is a follow-up email to this buyer, draft it in the rep's voice — load or build the voice profile per `${CLAUDE_PLUGIN_ROOT}/shared/voice-profile.md` (warm / voice-matched register). With no sent-email source, draft in a neutral register and label it; never fake the rep's tone.
 
 ## Example skeleton
 
@@ -113,5 +113,5 @@ A short script or talk-track to use on the next similar moment. Sendable as-is. 
 - **At least one strength, even on weak calls.** Reinforce before correcting (same rule as `coach-this-rep`).
 - **Cap agent calls at 3 per scoring run.** Single-question framings (we learned this the hard way — multi-part agent questions return empty).
 - **No fabricated scoring.** If the agent and summary both fail on a dimension, mark it "not scored — insufficient data" rather than guess.
-- **Voice is earned, not faked.** A drafted follow-up uses the rep's voice only from a real sent-email source (per `../../shared/voice-profile.md`). No source → neutral register, labelled. Never invent a style trait.
+- **Voice is earned, not faked.** A drafted follow-up uses the rep's voice only from a real sent-email source (per `${CLAUDE_PLUGIN_ROOT}/shared/voice-profile.md`). No source → neutral register, labelled. Never invent a style trait.
 - **Approval-gated outputs.** Notion log writes and Slack drafts require explicit user confirmation.

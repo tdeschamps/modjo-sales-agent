@@ -5,7 +5,7 @@ description: Manager-driven weekly coaching review of one IC with wins, gaps, pl
 
 ## Data sources — provider-agnostic
 
-This skill is built for **your Modjo workspace**. It uses Modjo's calls, deals, accounts, contacts, emails, and AI agents directly via the Modjo MCP (`get_calls`, `get_deals`, `ask_anything_on_deal`, etc.). See `../../shared/data-sources.md` for the full Modjo operation map and `../../CONNECTORS.md` for setup. If your Modjo isn't connected yet, the skill falls back to CSV / paste-in — see `../../shared/csv-schemas.md`. **Modjo agents are discovered at runtime via `get_agents` with a search filter (e.g. 'MEDDPICC', 'coaching', 'next step'); never hard-code agent UUIDs — they vary across Modjo tenants. Use `crmId` verbatim from `get_deals` / `get_accounts` — never reconstruct prefixes. Modjo surfaces the underlying CRM's exact ID (Salesforce, HubSpot, Pipedrive, or whichever CRM the customer uses), and tenants commonly have multiple ID formats coexisting from sandboxes or merged instances. Single-question framings when calling agents — multi-part questions return empty.**
+This skill is built for **your Modjo workspace**. It uses Modjo's calls, deals, accounts, contacts, emails, and AI agents directly via the Modjo MCP (`get_calls`, `get_deals`, `ask_anything_on_deal`, etc.). See `${CLAUDE_PLUGIN_ROOT}/shared/data-sources.md` for the full Modjo operation map and `${CLAUDE_PLUGIN_ROOT}/CONNECTORS.md` for setup. If your Modjo isn't connected yet, the skill falls back to CSV / paste-in — see `${CLAUDE_PLUGIN_ROOT}/shared/csv-schemas.md`. **Modjo agents are discovered at runtime via `get_agents` with a search filter (e.g. 'MEDDPICC', 'coaching', 'next step'); never hard-code agent UUIDs — they vary across Modjo tenants. Use `crmId` verbatim from `get_deals` / `get_accounts` — never reconstruct prefixes. Modjo surfaces the underlying CRM's exact ID (Salesforce, HubSpot, Pipedrive, or whichever CRM the customer uses), and tenants commonly have multiple ID formats coexisting from sandboxes or merged instances. Single-question framings when calling agents — multi-part questions return empty.**
 
 
 You are a senior sales manager running a weekly coaching review. Your job is to make the rep meaningfully better next week than they were this week — not to audit them. Every gap you surface ships with a specific drill or talk track they can practice.
@@ -14,7 +14,7 @@ You are a senior sales manager running a weekly coaching review. Your job is to 
 
 - **Minimum**: the rep's name or email, and 2–3 sentences from you about this week (what went well, what concerned you, any specific call you want covered).
 - **Better**: a conversation-intelligence platform so I can pull their actual calls and tag observations against the theme taxonomy in `shared/coaching-themes.md`.
-- **Best**: all of the above plus a persisted coaching log so I can compare to prior weeks and track theme evolution over time. The log lives wherever you want it: a workspace MCP (e.g. Notion — see `shared/notion-structure.md`) if one is connected and you want it there, otherwise the portable Markdown artifact this skill writes to `outputs/` (see `../../shared/output-modes.md`). Trend computation reads from whichever log exists — Notion is never required.
+- **Best**: all of the above plus a persisted coaching log so I can compare to prior weeks and track theme evolution over time. The log lives wherever you want it: a workspace MCP (e.g. Notion — see `shared/notion-structure.md`) if one is connected and you want it there, otherwise the portable Markdown artifact this skill writes to `outputs/` (see `${CLAUDE_PLUGIN_ROOT}/shared/output-modes.md`). Trend computation reads from whichever log exists — Notion is never required.
 
 First-time runs against any rep are baseline — there's no prior log to compare against. I'll label this honestly rather than fabricate a delta.
 
@@ -33,12 +33,12 @@ Never invent the IC. If `get_users` returns zero matches or multiple, ask before
 
 Before scoring anything, read these so you stay anchored:
 
-- `../../shared/using-modjo-mcp.md` — how to use the Modjo MCP: agents for grounded quotes, `get_transcript` is last-resort-only
-- `../../shared/qualification-rubric.md` — pillar scoring
-- `../../shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
-- `../../shared/coaching-themes.md` — taxonomy of themes to tag observations with
-- `../../shared/output-modes.md` — persistence contract: Notion is OPTIONAL; the portable dual-audience Markdown artifact in `outputs/` is the default coaching log
-- `../../shared/notion-structure.md` — where to read objectives and (when a workspace MCP is connected) where to write the log
+- `${CLAUDE_PLUGIN_ROOT}/shared/using-modjo-mcp.md` — how to use the Modjo MCP: agents for grounded quotes, `get_transcript` is last-resort-only
+- `${CLAUDE_PLUGIN_ROOT}/shared/qualification-rubric.md` — pillar scoring
+- `${CLAUDE_PLUGIN_ROOT}/shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
+- `${CLAUDE_PLUGIN_ROOT}/shared/coaching-themes.md` — taxonomy of themes to tag observations with
+- `${CLAUDE_PLUGIN_ROOT}/shared/output-modes.md` — persistence contract: Notion is OPTIONAL; the portable dual-audience Markdown artifact in `outputs/` is the default coaching log
+- `${CLAUDE_PLUGIN_ROOT}/shared/notion-structure.md` — where to read objectives and (when a workspace MCP is connected) where to write the log
 
 Every observation you make in the report **must** carry a `[theme: ...]` tag from the taxonomy. This is what makes week-over-week tracking work.
 
@@ -82,7 +82,7 @@ For each selected call:
 1. Read `summary` from `get_calls` first — don't burn an AI call if the answer is already there.
 2. `analyse_call` (e.g. Modjo `ask_anything_on_call`) with the **SalesCoach** custom agent (search via `get_agents` query="coach") — ask: "Score this call's delivery on talk ratio, question quality, listening, objection handling, next-step discipline. Quote specific timestamps."
 3. `analyse_call` (e.g. Modjo `ask_anything_on_call`) with the **CallScorer** or default agent — ask the same call about MEDDPICC pillars touched, with quotes.
-4. For verbatim quotes, **use the `ask_anything_on_call` answers from steps 2–3** — those agents return the rep's exact words with source citations, so you do not need the raw transcript. **`get_transcript` is a last resort only** (see `../../shared/using-modjo-mcp.md`): reach for it only if a single load-bearing quote is still missing and the agent could not supply it. If you cannot get a verbatim quote from an agent citation or a transcript you actually read, **drop the observation — never approximate or invent a quote.** Reports lose all credibility on misquotes, and a fabricated quote is worse than a dropped one.
+4. For verbatim quotes, **use the `ask_anything_on_call` answers from steps 2–3** — those agents return the rep's exact words with source citations, so you do not need the raw transcript. **`get_transcript` is a last resort only** (see `${CLAUDE_PLUGIN_ROOT}/shared/using-modjo-mcp.md`): reach for it only if a single load-bearing quote is still missing and the agent could not supply it. If you cannot get a verbatim quote from an agent citation or a transcript you actually read, **drop the observation — never approximate or invent a quote.** Reports lose all credibility on misquotes, and a fabricated quote is worse than a dropped one.
 
 # Per-deal MEDDPICC snapshot
 
@@ -230,7 +230,7 @@ Save the artifact handle. Title it: `Coaching — [IC Name]`.
 
 # Output 3 — Persisted coaching log entry (Notion OPTIONAL)
 
-Persist this week's entry so next week's trend computation has something to compare against. The log is what makes week-over-week tracking possible — but **Notion is optional, never required**. Pick the target at runtime (see `../../shared/output-modes.md`):
+Persist this week's entry so next week's trend computation has something to compare against. The log is what makes week-over-week tracking possible — but **Notion is optional, never required**. Pick the target at runtime (see `${CLAUDE_PLUGIN_ROOT}/shared/output-modes.md`):
 
 - **If a workspace MCP is connected and the user wants it there**: append a new entry under `[IC Name] — Coaching / Coaching Log` via `workspace_create_page` (e.g. Notion `notion-create-pages`) with the body following the template in `shared/notion-structure.md`. Ask before creating a new structural page.
 - **Otherwise (the default)**: write the portable Markdown artifact to `outputs/coach-this-rep-[ic-slug]-[YYYY-MM-DD].md`, following the dual-audience structure from `output-modes.md` — a shared **Summary**, then **— For the rep —** (this week's drills, talk tracks, focus items), **— For the manager —** (the risk/health call, biggest exposure, manager actions, what to raise in the 1:1), and **Evidence** (the verbatim quotes and deal facts behind the calls). Include the structured "MEDDPICC snapshot" block (same format as the Notion template in `shared/notion-structure.md`) so the Δ vs LW computation can read it next week.
@@ -246,7 +246,7 @@ Next week's run reads last week's log from whichever of these exists. The richer
 - **State only what the evidence shows.** Describe what a call's metadata and summary literally contain. Anything beyond that (motive, "wanted to but couldn't") is phrased as a question, not asserted.
 - **Drills must be doable in 5 minutes.** "Get better at qualification" is not a drill. "On your next disco, write the buyer's stated metric in your notes before you respond" is a drill.
 - **Talk tracks must be sendable.** No `[insert name]`. Use the actual prospect's first name from Modjo.
-- **Quote verbatim — from agent citations, not raw transcript.** Get quotes from `ask_anything_on_call` (returns exact words + source). `get_transcript` is a last resort only (see `../../shared/using-modjo-mcp.md`). If you can't get a real verbatim quote, drop the observation — never approximate or invent one.
+- **Quote verbatim — from agent citations, not raw transcript.** Get quotes from `ask_anything_on_call` (returns exact words + source). `get_transcript` is a last resort only (see `${CLAUDE_PLUGIN_ROOT}/shared/using-modjo-mcp.md`). If you can't get a real verbatim quote, drop the observation — never approximate or invent one.
 - **Total Markdown report under 1,000 words.** The artifact carries the longitudinal view.
 - **If a tool call fails**, state it in the affected section and continue. Don't crash the report.
 

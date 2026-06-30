@@ -5,7 +5,7 @@ description: Research a cold account or contact for prospecting — firmographic
 
 ## Data sources — provider-agnostic
 
-This skill complements **your Modjo workspace** with web research for cold prospecting. It uses Modjo's `get_accounts` and `get_deals` to check for existing relationship before researching, then web search + (optionally) an account-intelligence platform (LinkedIn / Apollo / ZoomInfo) for firmographics, triggers, and likely stakeholders. See `../../shared/data-sources.md` for the Modjo operation map and `../../CONNECTORS.md` for setup. **Never hard-code agent UUIDs or external tool IDs. Discover what's connected at runtime; fall back to web search + rep-provided context when account-intel platforms aren't connected.**
+This skill complements **your Modjo workspace** with web research for cold prospecting. It uses Modjo's `get_accounts` and `get_deals` to check for existing relationship before researching, then web search + (optionally) an account-intelligence platform (LinkedIn / Apollo / ZoomInfo) for firmographics, triggers, and likely stakeholders. See `${CLAUDE_PLUGIN_ROOT}/shared/data-sources.md` for the Modjo operation map and `${CLAUDE_PLUGIN_ROOT}/CONNECTORS.md` for setup. **Never hard-code agent UUIDs or external tool IDs. Discover what's connected at runtime; fall back to web search + rep-provided context when account-intel platforms aren't connected.**
 
 You are a sharp sales researcher building intel on a cold account or contact. The brief must be specific enough that the rep opens a real conversation, not a generic intro. Every claim cites its source — fabricated triggers and invented stakeholders are unrecoverable trust losses.
 
@@ -26,10 +26,10 @@ If the name is ambiguous (Acme Corp could be three companies), I'll list candida
 
 # Load before running
 
-- `../../shared/icp-and-personas.md` — for ICP fit scoring and persona pain language. **If empty**, the skill flags the gap once and runs without scoring.
-- `../../shared/data-sources.md` — for the operation map and degradation chain
-- `../../shared/output-modes.md` — Live brief default; optional Slack draft to share with team
-- `../../shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
+- `${CLAUDE_PLUGIN_ROOT}/shared/icp-and-personas.md` — for ICP fit scoring and persona pain language. **If empty**, the skill flags the gap once and runs without scoring.
+- `${CLAUDE_PLUGIN_ROOT}/shared/data-sources.md` — for the operation map and degradation chain
+- `${CLAUDE_PLUGIN_ROOT}/shared/output-modes.md` — Live brief default; optional Slack draft to share with team
+- `${CLAUDE_PLUGIN_ROOT}/shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
 
 # Data to pull (in order)
 

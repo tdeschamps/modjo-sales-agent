@@ -4,7 +4,7 @@
   <img src="https://gifrific.com/wp-content/uploads/2014/01/Jordan-Belfort-Pound-Chest-at-Restaurant-The-Wolf-of-Wall-Street.gif" alt="The name of the game: close." width="480">
 </p>
 
-> **Your Modjo data, weaponized.** 20 AI skills that prep your meetings, audit your deals, score your calls, draft your follow-ups, coach your reps, and hunt your expansion — straight off your Modjo conversations. The agent already read every call. Now it does the work.
+> **Your Modjo data, weaponized.** 21 AI skills that prep your meetings, audit your deals, score your calls, draft your follow-ups, handle objections, coach your reps, and hunt your expansion — straight off your Modjo conversations. The agent already read every call. Now it does the work.
 
 **Stop digging through call recordings. Start closing.** Every morning brief, deal audit, pipeline review, and coaching session — pulled from what your buyers *actually said*, drafted and ready, in 90 seconds. No copy-paste. No "what did they say on the last call?" The agent read it. It remembers. It acts.
 
@@ -66,7 +66,7 @@ Three layers, in order of how much capability they unlock:
 
 See `CONNECTORS.md` for the per-connector capability matrix.
 
-## The 20 skills
+## The 21 skills
 
 **Daily rhythm**
 
@@ -84,6 +84,7 @@ See `CONNECTORS.md` for the per-connector capability matrix.
 | `lock-the-close-plan` | `/close-plan [deal]` | Build or refresh the customer-shareable Mutual Action Plan |
 | `unstick-this-deal` | `/stuck-on [deal]` | 90-second tactical answer when a deal is stuck |
 | `score-this-call` | `/score-call [call]` | Score one call + drafted next-time play |
+| `handle-the-objection` | `/handle-objection [objection]` | In-the-moment rebuttal to a buyer's objection — in your voice, grounded in a won-deal precedent; live talk-track or async draft |
 | `write-the-follow-up` | `/follow-up [deal\|call]` | Draft the follow-up email to send — in your voice, grounded in real call commitments; optional threaded Gmail draft |
 
 **Portfolio view**
@@ -125,12 +126,18 @@ See `CONNECTORS.md` for the per-connector capability matrix.
 
 ## How outputs work
 
-Every skill has the same output contract:
+Every skill produces an **artifact** — and every artifact follows the same shared model. There are
+four artifact classes and one shared component vocabulary, specced in `shared/content-model.md`. The
+headline channels:
 
-1. **Live brief** *(default)* — rendered as a scannable widget in the chat (verdict line + 3–5 cards + optional drill-down, ≤ 350 words per the 90-second-scan discipline in `shared/widget-brevity.md`), styled per the editorial design system in `shared/artifact-design.md`
-2. **Persisted artifact** *(optional, approval-gated)* — for skills that benefit from persistence (coaching, MAP, audits, expansion logs, plays library). **Notion is optional**: if a workspace MCP is connected it writes there; otherwise it writes a portable, dual-audience Markdown file to `outputs/` structured for both the rep and their manager (Summary · For the rep · For the manager · Evidence)
+1. **Native interactive artifact** *(the headline)* — a self-contained, clickable view rendered in your host: an expandable MEDDPICC scorecard, a collapsible stakeholder map, a live coaching trend chart. Styled with the **evolved-Munro** editorial design system (`shared/artifact-design.md`), built per `shared/native-artifact.md`. It bakes in a snapshot of the data — "refresh" means re-run the skill. See `shared/reference/deal-review-beauhurst.html` for a real, working example. The collapsed view still passes the 90-second scan (`shared/widget-brevity.md`); depth lives one click away.
+2. **Persisted artifact** *(optional, approval-gated)* — for skills that benefit from persistence (coaching, MAP, audits, expansion logs, plays library). **Notion is optional**: if a workspace MCP is connected it writes there; otherwise it writes a **portable Markdown** file to `outputs/`, organized by substance with a single **Manager-lens callout** carrying the manager's takeaway — so the same file serves the rep and their manager.
 3. **Slack draft** *(optional, approval-gated)* — for skills that produce something rep-shareable (talk tracks, outbound, escalation prep)
 4. **Gmail draft** *(optional, approval-gated)* — `write-the-follow-up` can place a threaded draft in your mailbox. It's a draft — it lands in Drafts, never sends.
+
+If a host can't render the interactive artifact, the skill degrades gracefully: static widget →
+portable Markdown (always written). The Markdown is the floor; the interactive artifact is the
+ceiling.
 
 Hard rules across every skill:
 
@@ -173,7 +180,7 @@ Every SKILL.md follows the same pattern:
 
 ## v0.1.0 notes
 
-- 20 skills, all implemented. None are stubs.
+- 21 skills, all implemented. None are stubs.
 - `write-the-follow-up` is the most output-driven skill — its output *is* the email the rep sends. It auto-detects the situation (post-call recap / revival nudge / answer an open question), drafts in the rep's own voice (a persisted, hand-correctable voice profile learned from real sent emails), and — with Gmail connected — drops a threaded draft in the mailbox. Modjo-first; Gmail is optional and draft-only.
 - Methodology rubric stays swappable — ships with MEDDPICC; teams using BANT / SPICED / MEDDIC can swap the file content from `shared/qualification-rubrics/`.
 - `forecast` requires the user to provide a quota — gap analysis without a quota is meaningless, so the skill asks rather than assumes.

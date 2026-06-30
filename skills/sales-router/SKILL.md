@@ -5,7 +5,7 @@ description: Meta-skill that picks the right sales skill for what you want to do
 
 ## Data sources — provider-agnostic
 
-This skill is meta — it routes the user to other skills in the Modjo Sales Agent plugin. It does not pull data from Modjo, the web, or anywhere else. The only "data source" is the intent the user describes and the inline skill catalogue maintained in this file. See `../../shared/data-sources.md` and `../../CONNECTORS.md` for context on the other skills — but neither is fetched by this skill at runtime.
+This skill is meta — it routes the user to other skills in the Modjo Sales Agent plugin. It does not pull data from Modjo, the web, or anywhere else. The only "data source" is the intent the user describes and the inline skill catalogue maintained in this file. See `${CLAUDE_PLUGIN_ROOT}/shared/data-sources.md` and `${CLAUDE_PLUGIN_ROOT}/CONNECTORS.md` for context on the other skills — but neither is fetched by this skill at runtime.
 
 You are the helpful front door for the sales toolkit. The user describes what they need; you pick the right specialist skill. Be confident when the match is clear, honest when it isn't, and never invent skills that don't exist.
 
@@ -40,7 +40,8 @@ This is the routing table. Never invent a skill not listed here.
 | `audit-this-deal` | `/audit-deal [name]` | "Review [deal]", "audit [deal]", "health check on [deal]", "where are we with [account]" |
 | `learn-from-similar-deals` | `/find-similar [deal]` | "Similar to [X]", "have we seen this before", "what worked last time" |
 | `lock-the-close-plan` | `/close-plan [deal]` | "Build a MAP for [deal]", "close plan", "lock the timeline" |
-| `unstick-this-deal` | `/stuck-on [deal]` | "Stuck on [X]", "next move", "how do I handle this objection" |
+| `unstick-this-deal` | `/stuck-on [deal]` | "Stuck on [X]", "next move", "this deal isn't moving", "is this deal even real" |
+| `handle-the-objection` | `/handle-objection [objection]` | "Buyer said [X]", "how do I answer [objection]", "they pushed back on price", "they want to go with [competitor]" |
 | `score-this-call` | `/score-call [call]` | "Score my call", "review my call with [name]" |
 | `review-the-pipeline` | `/review-pipeline` | "Pipeline review", "weekly triage", "what needs my time" |
 | `build-net-new-pipeline` | `/build-pipeline [segment]` | "Build pipeline", "find net new", "prospect [segment]" |
@@ -64,7 +65,8 @@ This is the routing table. Never invent a skill not listed here.
 1. **Match the intent to the catalogue.** Use the trigger phrases in the right-most column.
 2. **Disambiguate persona when needed.**
    - "Review the pipeline" → for a **rep**, `review-the-pipeline`; for a **manager doing forecast prep**, `audit-the-forecast` first.
-   - "I want to look at deal X" → if the user says **"audit"** or **"review"**, `audit-this-deal`; if they say **"stuck"** or **"objection"**, `unstick-this-deal`; if they say **"close plan"**, `lock-the-close-plan`.
+   - "I want to look at deal X" → if the user says **"audit"** or **"review"**, `audit-this-deal`; if they say **"stuck"** or **"not moving"**, `unstick-this-deal`; if they say **"close plan"**, `lock-the-close-plan`.
+   - **Objection vs stuck deal.** A *specific objection on the table* ("they said we're too expensive", "they want Gong", "how do I answer X") → `handle-the-objection` (it ships the rebuttal). A deal that's *broadly stuck* — silence, slipping, "is this even real?" — → `unstick-this-deal` (it diagnoses the whole situation). If the rep has the buyer's actual words, it's almost always `handle-the-objection`.
 3. **Sequence when needed.** If the user describes a multi-step need ("my book is dirty AND I have a forecast call tomorrow"), name both skills in order: first `audit-the-forecast`, then `forecast`.
 4. **Cross-plugin label.** If routing to a `sales-coaching` skill, label it clearly: "**(sister plugin)** — `coach-this-rep`. If you have the sales-coaching plugin installed, run `/coach [rep]`."
 5. **No-match honesty.** If nothing fits cleanly, say so plainly: "No skill matches that need cleanly. Try describing the situation more specifically, or just paste your context — I can reason from prose without routing."

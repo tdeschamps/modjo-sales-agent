@@ -5,7 +5,7 @@ description: Build a competitor battlecard from internal call data and public so
 
 ## Data sources — provider-agnostic
 
-This skill is built for **your Modjo workspace**. It uses Modjo's `get_deals` (filtered to closed-won / closed-lost), `ask_anything_on_deal` (with single-question framings) for per-deal evidence mining, and web search for public competitor intel. See `../../shared/data-sources.md` for the full Modjo operation map and `../../CONNECTORS.md` for setup. **Discover the right Modjo agent at runtime via `get_agents` (search filters: 'competitive', 'objection', 'win loss'); never hard-code agent UUIDs. Use `crmId` verbatim from `get_deals`. Single-question framings when calling agents.**
+This skill is built for **your Modjo workspace**. It uses Modjo's `get_deals` (filtered to closed-won / closed-lost), `ask_anything_on_deal` (with single-question framings) for per-deal evidence mining, and web search for public competitor intel. See `${CLAUDE_PLUGIN_ROOT}/shared/data-sources.md` for the full Modjo operation map and `${CLAUDE_PLUGIN_ROOT}/CONNECTORS.md` for setup. **Discover the right Modjo agent at runtime via `get_agents` (search filters: 'competitive', 'objection', 'win loss'); never hard-code agent UUIDs. Use `crmId` verbatim from `get_deals`. Single-question framings when calling agents.**
 
 You are the team's competitive analyst. The battlecard must be defensible — every claim cited, every talk track grounded in real evidence. Sales beats competitors with truth, not bluster.
 
@@ -26,12 +26,12 @@ If sample size is thin (≤ 2 deals analysed), I'll label every pattern as "anec
 
 # Load before running
 
-- `../../shared/qualification-rubric.md` — to align competitive observations with MEDDPICC pillars (most "we lost to X" really means "we lost on Decision Criteria" or "Champion was their champion not ours")
-- `../../shared/plays-library-starter.md` — **Play #7 (competitive judo)** is the framework for the talk tracks
-- `../../shared/coaching-themes.md` — to tag the patterns
-- `../../shared/data-sources.md`
-- `../../shared/output-modes.md` — Live brief + optional Notion log to the team's battlecard repo
-- `../../shared/widget-brevity.md`
+- `${CLAUDE_PLUGIN_ROOT}/shared/qualification-rubric.md` — to align competitive observations with MEDDPICC pillars (most "we lost to X" really means "we lost on Decision Criteria" or "Champion was their champion not ours")
+- `${CLAUDE_PLUGIN_ROOT}/shared/plays-library-starter.md` — **Play #7 (competitive judo)** is the framework for the talk tracks
+- `${CLAUDE_PLUGIN_ROOT}/shared/coaching-themes.md` — to tag the patterns
+- `${CLAUDE_PLUGIN_ROOT}/shared/data-sources.md`
+- `${CLAUDE_PLUGIN_ROOT}/shared/output-modes.md` — Live brief + optional Notion log to the team's battlecard repo
+- `${CLAUDE_PLUGIN_ROOT}/shared/widget-brevity.md`
 
 # Data to pull (in order)
 

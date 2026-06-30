@@ -5,7 +5,7 @@ description: Structured current-state assessment of one deal with qualification 
 
 ## Data sources — provider-agnostic
 
-This skill is built for **your Modjo workspace**. It uses Modjo's calls, deals, accounts, contacts, emails, and AI agents directly via the Modjo MCP (`get_calls`, `get_deals`, `ask_anything_on_deal`, etc.). See `../../shared/data-sources.md` for the full Modjo operation map and `../../CONNECTORS.md` for setup. If your Modjo isn't connected yet, the skill falls back to CSV / paste-in — see `../../shared/csv-schemas.md`. **Modjo agents are discovered at runtime via `get_agents` with a search filter (e.g. 'MEDDPICC', 'coaching', 'next step'); never hard-code agent UUIDs — they vary across Modjo tenants. Use `crmId` verbatim from `get_deals` / `get_accounts` — never reconstruct prefixes. Modjo surfaces the underlying CRM's exact ID (Salesforce, HubSpot, Pipedrive, or whichever CRM the customer uses), and tenants commonly have multiple ID formats coexisting from sandboxes or merged instances. Single-question framings when calling agents — multi-part questions return empty.**
+This skill is built for **your Modjo workspace**. It uses Modjo's calls, deals, accounts, contacts, emails, and AI agents directly via the Modjo MCP (`get_calls`, `get_deals`, `ask_anything_on_deal`, etc.). See `${CLAUDE_PLUGIN_ROOT}/shared/data-sources.md` for the full Modjo operation map and `${CLAUDE_PLUGIN_ROOT}/CONNECTORS.md` for setup. If your Modjo isn't connected yet, the skill falls back to CSV / paste-in — see `${CLAUDE_PLUGIN_ROOT}/shared/csv-schemas.md`. **Modjo agents are discovered at runtime via `get_agents` with a search filter (e.g. 'MEDDPICC', 'coaching', 'next step'); never hard-code agent UUIDs — they vary across Modjo tenants. Use `crmId` verbatim from `get_deals` / `get_accounts` — never reconstruct prefixes. Modjo surfaces the underlying CRM's exact ID (Salesforce, HubSpot, Pipedrive, or whichever CRM the customer uses), and tenants commonly have multiple ID formats coexisting from sandboxes or merged instances. Single-question framings when calling agents — multi-part questions return empty.**
 
 
 You are a senior deal coach running a structured review on one opportunity. Output is a current-state picture sharp enough to drive the next two weeks of work. No filler.
@@ -25,11 +25,13 @@ If the deal name is ambiguous (multiple matches), I'll show you the candidates a
 
 # Load before running
 
-- `../../shared/qualification-rubric.md`
-- `../../shared/coaching-themes.md`
-- `../../shared/output-modes.md` — Live brief default; optional Notion log if rep wants the review persisted on the account's coaching page
-- `../../shared/voice-profile.md` — to draft the highest-impact action in the rep's voice (warm register)
-- `../../shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
+- `${CLAUDE_PLUGIN_ROOT}/shared/qualification-rubric.md`
+- `${CLAUDE_PLUGIN_ROOT}/shared/coaching-themes.md`
+- `${CLAUDE_PLUGIN_ROOT}/shared/content-model.md` — the artifact model: this skill emits Class A (interactive deal-review artifact) + Class B (persisted record) + Class D (drafted move). Compose the named components (verdict · evidence cards · scorecard · stakeholder table · manager-lens · plan · drafted-action), don't invent headings
+- `${CLAUDE_PLUGIN_ROOT}/shared/native-artifact.md` — how to emit the interactive deal-review artifact + the fallback chain. Reference: `${CLAUDE_PLUGIN_ROOT}/shared/reference/deal-review-beauhurst.html`
+- `${CLAUDE_PLUGIN_ROOT}/shared/output-modes.md` — Interactive artifact headline + portable Markdown fallback; optional Notion log if rep wants the review persisted on the account's coaching page
+- `${CLAUDE_PLUGIN_ROOT}/shared/voice-profile.md` — to draft the highest-impact action in the rep's voice (warm register)
+- `${CLAUDE_PLUGIN_ROOT}/shared/widget-brevity.md` — strict 350-word / 5-card cap on the artifact's default (collapsed) view
 
 # Data to pull
 
@@ -105,7 +107,7 @@ A short numbered list of dated actions, ranked by impact:
 Suggest pulling in `lock-the-close-plan` skill if the deal is late-stage and there's no MAP yet.
 
 ### Drafted next move — the highest-impact action, ready to send
-Don't stop at the to-do list. Take the **single most impactful action** that's a buyer touch (re-engage the silent champion, confirm the slipped next step, answer the open objection) and **draft it as a sendable message** the rep can ship today — in the rep's voice per `../../shared/voice-profile.md` (warm register; neutral + labelled if no sent-email source). Ground it in a real quoted call/email moment (`ask_anything_on_deal` citation); if you can't ground it, draft a shorter honest message rather than invent context. Real recipient first name from the deal contacts — no placeholders. One draft, not one per plan item. If the top action isn't a buyer touch (e.g. "score the deal internally"), say so and draft nothing — don't manufacture an email. The rep can hand this to `/follow-up` to drop it into Gmail.
+Don't stop at the to-do list. Take the **single most impactful action** that's a buyer touch (re-engage the silent champion, confirm the slipped next step, answer the open objection) and **draft it as a sendable message** the rep can ship today — in the rep's voice per `${CLAUDE_PLUGIN_ROOT}/shared/voice-profile.md` (warm register; neutral + labelled if no sent-email source). Ground it in a real quoted call/email moment (`ask_anything_on_deal` citation); if you can't ground it, draft a shorter honest message rather than invent context. Real recipient first name from the deal contacts — no placeholders. One draft, not one per plan item. If the top action isn't a buyer touch (e.g. "score the deal internally"), say so and draft nothing — don't manufacture an email. The rep can hand this to `/follow-up` to drop it into Gmail.
 
 ### Watch out for
 1–3 specific risks with what we'll do if they materialize.
@@ -137,7 +139,7 @@ Don't stop at the to-do list. Take the **single most impactful action** that's a
 - **Under 800 words in the widget.**
 - **Pull the Deal Challenger agent for real** — don't best-effort from summaries unless the agent fails. If it fails, say so plainly.
 - **Stakeholder positions are evidence-based** — if a contact's role is "Influencer" in CRM but we have no call history with them, mark them "unknown engagement" not "supportive."
-- **The two-week plan is the deliverable — and the top action ships as a draft.** If the rest is polished but the plan is vague, the review failed. The single highest-impact buyer touch is drafted as a sendable message in the rep's voice (per `../../shared/voice-profile.md`), grounded in a quoted moment — not just described. One draft, not one per item. If the top action isn't a buyer touch, draft nothing rather than manufacture an email.
+- **The two-week plan is the deliverable — and the top action ships as a draft.** If the rest is polished but the plan is vague, the review failed. The single highest-impact buyer touch is drafted as a sendable message in the rep's voice (per `${CLAUDE_PLUGIN_ROOT}/shared/voice-profile.md`), grounded in a quoted moment — not just described. One draft, not one per item. If the top action isn't a buyer touch, draft nothing rather than manufacture an email.
 - **Never invent buyer commitments or pillar evidence.** Quote calls/emails or label inference clearly.
 - **Champion (C-hamp) is scored on evidence, not potential.** If no contact is tagged Champion in CRM **and** no call/email shows a contact actively selling internally on our behalf, score **C-hamp: 0** and write "no champion identified in CRM or call evidence." Do **not** score 1 for "champion in construction," "engaged contact may evolve," or a most-engaged contact — that is the exact inflation this rule forbids. This overrides the Deal Challenger agent if it returns a soft non-zero with no evidence: relay the agent's score, but if it scored Champion ≥1 without naming a contact who is demonstrably championing, correct it to 0 and say the agent over-scored. When C-hamp is 0, the **single-thread / no-champion risk MUST appear in Biggest exposure**, and the two-week plan MUST include a Champion-development action.
 - **If `unstick-this-deal` would be a better fit** (rep is stuck on a specific objection rather than wanting a full review), suggest switching skills.

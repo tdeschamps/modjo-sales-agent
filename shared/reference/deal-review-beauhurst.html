@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deal Review — Beauhurst</title>
+<!--
+  REFERENCE ARTIFACT — Modjo Sales Agent
+  Class B (persisted record) interactive deal-review dashboard.
+  Built from the real data in outputs/deal_review_beauhurst_2026-06-05.md.
+
+  This is the copy-paste reference for the "evolved Munro" interactive design system
+  (see shared/artifact-design.md + shared/native-artifact.md + shared/content-model.md).
+
+  Component map (content-model.md vocabulary):
+    verdict line · anti-fabrication flag · evidence card (hygiene) · scorecard (MEDDPICC,
+    click a pillar to reveal evidence) · stakeholder table (collapsible) · evidence card
+    (pivotal moment) · manager-lens callout · plan block · drafted-action block (copy, no send).
+
+  Data model: SNAPSHOT at generation. No MCP calls. "Refresh" = re-run the skill.
+  Honesty rules enforced: pillars scored 0 show "scored 0", never a fabricated quote.
+  The C-hamp 1→0 correction is shown, not hidden.
+-->
+<style>
+:root{
+  --cream:#fff9ee; --paper:#ffffff; --ink:#3f322a; --warm-gray:#9f968c;
+  --stone:#c5bdb3; --earth:#796e65; --teal:#004e4e; --aubergine:#560e4b;
+  --iris:#a56eff; --cobalt:#3074f9; --ice:#bfebfe; --amber:#c67700;
+  --font:'Neue Haas Grotesk Display',Inter,'Helvetica Neue',ui-sans-serif,system-ui,sans-serif;
+  --ease:cubic-bezier(.2,0,.2,1);
+}
+*{box-sizing:border-box;}
+body{
+  background:var(--cream);color:var(--ink);font-family:var(--font);
+  font-size:14px;line-height:1.43;letter-spacing:.24px;margin:0;padding:40px;
+  max-width:920px;
+}
+h1,.display{font-weight:400;font-size:43px;line-height:1.09;letter-spacing:.39px;margin:0 0 12px;}
+.verdict{font-weight:400;font-size:30px;line-height:1.16;letter-spacing:.39px;margin:0 0 4px;max-width:760px;}
+.label{font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.017em;color:var(--ink);margin:0 0 10px;}
+.meta{color:var(--earth);font-size:13px;line-height:1.5;margin:0 0 2px;max-width:760px;}
+.meta em{color:var(--warm-gray);font-style:normal;}
+p{font-size:14px;line-height:1.43;color:var(--ink);max-width:720px;}
+hr{border:0;border-top:1px solid var(--stone);margin:32px 0;}
+.card{background:var(--cream);border:1px solid var(--stone);border-radius:2px;padding:20px;margin:0 0 16px;}
+.card.accent-aubergine{border-color:var(--aubergine);}
+.card.accent-iris{border-color:var(--iris);}
+.card.accent-cobalt{border-color:var(--cobalt);}
+.card.accent-ice{border-color:var(--ice);}
+
+/* ── Anti-fabrication flag — never collapsible, never hidden ── */
+.flag{font-size:12px;color:var(--earth);font-style:italic;margin:8px 0 0;}
+
+/* ── Hygiene strip (at-risk) ── */
+.hygiene{border:1px solid var(--amber);border-radius:2px;padding:16px 20px;margin:0 0 16px;background:var(--cream);}
+.hygiene .label{color:var(--amber);}
+.hygiene-row{display:flex;gap:12px;border-top:1px solid var(--stone);padding:12px 0;}
+.hygiene-row:first-of-type{border-top:0;padding-top:4px;}
+.hygiene-row .sig{flex:0 0 auto;font-size:16px;line-height:1.2;}
+.hygiene-row .body{flex:1;}
+.hygiene-row .body strong{font-weight:600;}
+.hygiene-row .body .q{display:block;color:var(--earth);margin-top:4px;font-size:13px;}
+
+/* ── Health dots ── */
+.health-red{color:var(--amber);} .health-amber{color:var(--amber);} .health-green{color:var(--teal);}
+
+/* ── Interactive scorecard ── */
+.score-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;}
+.score-total{font-size:13px;color:var(--earth);}
+.rubric{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;color:var(--earth);
+  background:var(--paper);border:1px solid var(--stone);border-radius:2px;padding:8px 10px;margin:12px 0 16px;overflow-x:auto;white-space:nowrap;}
+.pillar{border-top:1px solid var(--stone);}
+.pillar:first-of-type{border-top:0;}
+.pillar-btn{
+  width:100%;display:flex;align-items:center;gap:12px;background:none;border:0;
+  font-family:inherit;color:var(--ink);font-size:14px;text-align:left;
+  padding:11px 4px;cursor:pointer;transition:background .12s var(--ease);
+  border-left:2px solid transparent;
+}
+.pillar-btn:hover{background:var(--paper);border-left-color:var(--teal);}
+.pillar-btn:focus-visible{outline:2px solid var(--teal);outline-offset:-2px;}
+.pillar-btn .pname{flex:1;}
+.pillar-btn .pscore{flex:0 0 auto;font-weight:600;font-variant-numeric:tabular-nums;color:var(--earth);}
+.pillar-btn .pscore.zero{color:var(--amber);}
+.pillar-btn .chev{flex:0 0 auto;color:var(--warm-gray);transition:transform .2s var(--ease);font-size:11px;}
+.pillar-btn[aria-expanded="true"] .chev{transform:rotate(180deg);}
+.pillar-ev{
+  max-height:0;overflow:hidden;transition:max-height .2s var(--ease);
+  background:var(--paper);border-left:2px solid var(--stone);margin:0 0 0 2px;
+}
+.pillar-ev .inner{padding:12px 16px;color:var(--earth);font-size:13.5px;line-height:1.5;}
+.pillar-ev .inner.scored-zero{color:var(--amber);}
+
+/* ── Collapsible region (stakeholders, correction) ── */
+.disclose-btn{
+  width:100%;display:flex;align-items:center;gap:10px;background:none;border:0;
+  font-family:inherit;color:var(--ink);font-size:12px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.017em;cursor:pointer;padding:4px;border-left:2px solid transparent;
+  transition:background .12s var(--ease);
+}
+.disclose-btn:hover{background:var(--paper);border-left-color:var(--teal);}
+.disclose-btn:focus-visible{outline:2px solid var(--teal);outline-offset:-2px;}
+.disclose-btn .chev{color:var(--warm-gray);transition:transform .2s var(--ease);font-size:11px;}
+.disclose-btn[aria-expanded="true"] .chev{transform:rotate(180deg);}
+.disclose-region{max-height:0;overflow:hidden;transition:max-height .24s var(--ease);}
+
+/* ── Stakeholder rows ── */
+.stk{border-top:1px solid var(--stone);padding:12px 4px;}
+.stk:first-of-type{border-top:0;}
+.stk .name{font-weight:600;}
+.stk .role{color:var(--earth);font-size:13px;}
+.stk .read{color:var(--ink);font-size:13.5px;margin-top:3px;}
+
+/* ── Data rows (plan) ── */
+.row{display:flex;justify-content:space-between;gap:16px;border-top:1px solid var(--stone);padding:11px 0;}
+.row:first-of-type{border-top:0;}
+.row .k{color:var(--ink);} .row .v{color:var(--earth);text-align:right;flex:0 0 auto;white-space:nowrap;}
+
+/* ── Drafted-action block — copy, no send ── */
+.draft pre{
+  background:var(--paper);border:1px solid var(--stone);border-radius:2px;
+  padding:16px;margin:12px 0 0;white-space:pre-wrap;font-family:inherit;font-size:13.5px;
+  line-height:1.5;color:var(--ink);
+}
+.draft-foot{display:flex;align-items:center;gap:12px;margin-top:12px;}
+.btn{
+  background:var(--teal);color:#fff;font-weight:600;font-size:12px;text-transform:uppercase;
+  letter-spacing:.018em;padding:10px 18px;border:0;border-radius:2px;cursor:pointer;font-family:inherit;
+  transition:opacity .12s var(--ease);
+}
+.btn:hover{opacity:.88;}
+.btn:focus-visible{outline:2px solid var(--ink);outline-offset:2px;}
+.btn:active{transform:translateY(1px);}
+.no-send{font-size:11.5px;color:var(--warm-gray);}
+
+footer{margin-top:8px;color:var(--warm-gray);font-size:11.5px;line-height:1.5;max-width:760px;}
+
+@media (prefers-reduced-motion: reduce){
+  *{transition-duration:0ms !important;}
+}
+</style>
+</head>
+<body>
+
+<!-- ── Header band ── -->
+<p class="label">Deal Review · Beauhurst · 2026-06-05</p>
+<h1>Beauhurst</h1>
+<p class="meta">New Deal · £700 <em>(placeholder)</em> · Close 2028-03-02 (≈21 mo out) · Owner: Agatha Stopnicki · Source: Outbound</p>
+<p class="meta"><em>Stage not surfaced by CRM feed · Last activity 2026-04-23 (our side) · 50 days since any buyer touch</em></p>
+
+<!-- ── Verdict line (never collapsible) ── -->
+<hr>
+<p class="label"><span class="health-red">●</span>&nbsp; At risk</p>
+<p class="verdict">Disqualify or reset to nurture — there is no live buying process; the close date and amount are fictional.</p>
+<p class="flag">Snapshot — generated from the 2026-06-05 run. Refresh by re-running <code>/audit-deal Beauhurst</code>.</p>
+
+<!-- ── Hygiene strip (evidence cards, highest-signal — surfaced first) ── -->
+<hr>
+<div class="hygiene">
+  <p class="label">Hygiene flags — 4 fired · these matter more than the score</p>
+
+  <div class="hygiene-row">
+    <span class="sig">🛑</span>
+    <div class="body">
+      <strong>Buyer said “not now.”</strong> Highest-signal disqualifier in the deal.
+      <span class="q">“let's leave this session… once the dust has settled (and we have a clearer problem statement that directs us towards modjo) we'll be back in touch.” — Sam Jennings, email · 2026-04-16</span>
+    </div>
+  </div>
+
+  <div class="hygiene-row">
+    <span class="sig">📅</span>
+    <div class="body">
+      <strong>Fake far-future close date.</strong> Close is 2028-03-02 on a New Deal opened 2026-04-10 — ~21 months out. A date set to keep the deal open, not a real forecast.
+    </div>
+  </div>
+
+  <div class="hygiene-row">
+    <span class="sig">💷</span>
+    <div class="body">
+      <strong>Amount is a placeholder.</strong> CRM amount is £700. The buyer's own new-business deals run £40k–£60k; real Modjo ARR would be multiples of £700.
+    </div>
+  </div>
+
+  <div class="hygiene-row">
+    <span class="sig">💤</span>
+    <div class="body">
+      <strong>Stalled — no buyer touch in 50 days.</strong> Last inbound was the 2026-04-16 “let's leave it.” Agatha's 2026-04-23 nudge went unanswered.
+    </div>
+  </div>
+</div>
+
+<!-- ── Interactive scorecard — click a pillar to reveal its evidence ── -->
+<div class="card">
+  <div class="score-head">
+    <p class="label" style="margin-bottom:0;">MEDDPICC scorecard</p>
+    <span class="score-total">5/16 (corrected) · agent returned 6/16 — overridden by the buyer “not now”</span>
+  </div>
+  <p class="rubric">RUBRIC: M:1 E:0 D-crit:1 D-proc:0 P:0 I:2 C-hamp:0 C-omp:1 | Total: 5/16 (agent 6/16, C-hamp corrected 1→0)</p>
+
+  <div id="scorecard">
+    <!-- pillars injected; each carries either real evidence or an honest "scored 0" note -->
+  </div>
+
+  <p class="flag" style="margin-top:14px;">Biggest gap: the entire buy-side — no EB, no process, no paper, no champion (E / D-proc / P / C-hamp all 0). High pain and a clear competitive frame can't close this while the buyer has deferred.</p>
+
+  <!-- The C-hamp 1→0 correction is shown, not hidden — behind a disclosure but always reachable -->
+  <div style="margin-top:14px;border-top:1px solid var(--stone);padding-top:12px;">
+    <button class="disclose-btn" aria-expanded="false" data-target="correction">
+      <span class="chev">▾</span> Why champion was corrected 1 → 0
+    </button>
+    <div class="disclose-region" id="correction">
+      <p style="color:var(--earth);font-size:13.5px;padding:10px 6px 4px;">
+        Agent scored Champion 1. Corrected to 0 per rubric: no named contact is demonstrably advocating for Modjo. Sam is challenging the need and pushing us off, not selling us internally. A score needs a champion who <em>moves the deal</em>, not merely a warm contact.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ── Stakeholder table — collapsible ── -->
+<div class="card">
+  <button class="disclose-btn" aria-expanded="false" data-target="stakeholders" style="margin-bottom:2px;">
+    <span class="chev">▾</span> Stakeholder map — customer side (3) · single-threaded on a sceptic
+  </button>
+  <div class="disclose-region" id="stakeholders">
+    <div style="padding-top:8px;">
+      <div class="stk">
+        <span class="name">Sam Jennings</span> · <span class="role">Deputy Head of Commercial Ops — senior / gatekeeper</span>
+        <div class="read">Sceptic-in-chief. Owns the “build internally” view. The pump-the-brakes came from him. Emailed 2026-04-16, then quiet.</div>
+      </div>
+      <div class="stk">
+        <span class="name">Euan Baillie</span> · <span class="role">Commercial Ops Associate — influencer / user</span>
+        <div class="read">Most receptive; building the internal AI stack. Best re-entry point. On the 2026-04-17 demo.</div>
+      </div>
+      <div class="stk">
+        <span class="name">Toby Brown</span> · <span class="role">Sales Team Lead — user / ops sponsor</span>
+        <div class="read">Operational pain-owner. Unvalidated as advocate. On the 2026-04-17 demo.</div>
+      </div>
+      <p class="flag">Gaps: no economic buyer named · no champion · effectively single-threaded on a sceptic · decision tied to an undated Gong renewal we can't see.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── Evidence card — pivotal moment ── -->
+<div class="card accent-iris">
+  <p class="label">Pivotal moment</p>
+  <p>Email — “Re: Quick note before our demo” · 2026-04-16 · Sam Jennings:</p>
+  <p style="color:var(--earth);border-left:2px solid var(--iris);padding-left:14px;margin-left:2px;">
+    “let's leave this session. As i mentioned last week — we're working on quite a few tooling projects atm and building things internally. Once the dust has settled… we'll be back in touch.”
+  </p>
+  <p style="margin-top:10px;">This — not the demo that followed with Euan/Toby — is the true state of the deal. The buyer self-disqualified for now.</p>
+</div>
+
+<!-- ── Manager-lens callout (replaces a whole "— For the manager —" section) ── -->
+<div class="card accent-aubergine">
+  <p class="label">Manager lens</p>
+  <p>This is a forecast-hygiene problem, not a deal to coach. Have Agatha reset or close it this week before it inflates open-pipe at £700/2028. The one 1:1 question: <strong>“What's the single date that makes Beauhurst real again?”</strong> — if she can't name the Gong renewal window, it's nurture, not pipeline.</p>
+</div>
+
+<!-- ── Plan block ── -->
+<div class="card">
+  <p class="label">Two-week plan — disqualify cleanly, or one re-qualify attempt</p>
+  <div class="row"><span class="k">Reset the CRM record (pull close date / drop £700 placeholder)</span><span class="v">by Jun 09 · rep</span></div>
+  <div class="row"><span class="k">One re-qualify email to <strong>Euan</strong> (not Sam): “When's the Gong renewal window?”</span><span class="v">by Jun 10 · rep</span></div>
+  <div class="row"><span class="k">If a renewal date comes back → book a 20-min decision-mapping call</span><span class="v">by Jun 19 · joint</span></div>
+  <div class="row"><span class="k">Park, don't chase Sam — he set the terms</span><span class="v">ongoing</span></div>
+  <p class="flag">v0.2 doesn't write to CRM — the reset is a manual edit for Agatha.</p>
+</div>
+
+<!-- ── Drafted-action block — Copy, no send ── -->
+<div class="card accent-cobalt draft">
+  <p class="label">Drafted next move — re-qualify email to Euan</p>
+  <pre id="draft-text">Subject: Quick one — Gong renewal timing?
+
+Hi Euan,
+
+Following the demo back in April — I know Sam flagged you've got a few tooling
+projects on internally, so no pressure on timing.
+
+One thing that'd help me know whether/when this is worth picking back up: when's
+your Gong renewal window? That's really the date that decides whether there's a
+natural moment to look at Modjo properly vs. parking it for now.
+
+If it's a way out, totally fine — I'll check back closer to it.
+
+Best,
+Agatha</pre>
+  <div class="draft-foot">
+    <button class="btn" id="copy-btn" type="button">Copy</button>
+    <span class="no-send">Draft only — there is no send path. You send it from your own inbox.</span>
+  </div>
+  <p class="flag">Voice: neutral register — no voice profile on file for Agatha yet. Connect Gmail to voice-match.</p>
+</div>
+
+<!-- ── Watch-out / honesty footer ── -->
+<footer>
+  <strong>Watch out for:</strong> chasing a placeholder as if it's pipeline (reset this week) · re-engaging through Sam, who'll re-defer (go through Euan) · “build in-house” hardening (the only re-entry is <em>amplify your stack</em>, not <em>replace Gong</em>).
+  <br><br>
+  Evidence sourced from Modjo agent citations (calls + emails, quoted verbatim with dates). MEDDPICC from the Deal Challenger agent, C-hamp human-corrected. No quotes invented; pillars with no evidence are shown as “scored 0”.
+</footer>
+
+<script>
+// ── SNAPSHOT DATA (baked at generation — no MCP calls) ─────────────────────────
+// Each pillar carries EITHER a real evidence string OR scoredZero:true with an
+// honest note. Never a fabricated quote for a 0-scored pillar.
+const PILLARS = [
+  { key:"M",      name:"Metrics",          score:1, ev:"Value signals present (25–30% of week on outbound, ~90% unproductive; 4–5h/wk admin; 7 reps) but no agreed target metric or ROI €." },
+  { key:"E",      name:"Economic buyer",   score:0, scoredZero:true, ev:"No budget signer identified or contacted. Sam / Euan / Toby are all operational." },
+  { key:"D-crit", name:"Decision criteria",score:1, ev:"Implied: Gong parity, HubSpot integration, GDPR, AI agents. None weighted or formalised." },
+  { key:"D-proc", name:"Decision process", score:0, scoredZero:true, ev:"Unknown. Only signal is “depends on Gong renewal” — undated." },
+  { key:"P",      name:"Paper process",    score:0, scoredZero:true, ev:"Never discussed." },
+  { key:"I",      name:"Identify pain",    score:2, ev:"Clear, multi-faceted: lead quality vs quantity, replicating top performers, admin drag, structural pipeline-gen problem." },
+  { key:"C-hamp", name:"Champion",         score:0, scoredZero:true, ev:"No champion. Sam is challenging the need and pushing us off, not selling internally. (Agent scored 1 — corrected to 0; see the correction note above.)" },
+  { key:"C-omp",  name:"Competition",      score:1, ev:"Gong is the embedded incumbent and we know it — but no applied battlecard or buyer lean captured." },
+];
+
+// ── Build the interactive scorecard ───────────────────────────────────────────
+const sc = document.getElementById("scorecard");
+PILLARS.forEach((p, i) => {
+  const evId = "ev-" + i;
+  const wrap = document.createElement("div");
+  wrap.className = "pillar";
+  wrap.innerHTML =
+    '<button class="pillar-btn" aria-expanded="false" aria-controls="'+evId+'">' +
+      '<span class="pname">'+p.key+' — '+p.name+'</span>' +
+      '<span class="pscore'+(p.score===0?' zero':'')+'">'+p.score+'</span>' +
+      '<span class="chev">▾</span>' +
+    '</button>' +
+    '<div class="pillar-ev" id="'+evId+'">' +
+      '<div class="inner'+(p.scoredZero?' scored-zero':'')+'">' +
+        (p.scoredZero ? '<strong>Scored 0.</strong> ' : '') + p.ev +
+      '</div>' +
+    '</div>';
+  sc.appendChild(wrap);
+});
+
+// ── Expand/collapse a max-height region (pillar evidence or disclosure) ────────
+function toggleRegion(btn, region){
+  const open = btn.getAttribute("aria-expanded") === "true";
+  btn.setAttribute("aria-expanded", String(!open));
+  region.style.maxHeight = open ? "0px" : (region.scrollHeight + 24) + "px";
+}
+
+// pillar evidence toggles
+document.querySelectorAll(".pillar-btn").forEach(btn => {
+  const region = document.getElementById(btn.getAttribute("aria-controls"));
+  btn.addEventListener("click", () => toggleRegion(btn, region));
+});
+
+// disclosure toggles (stakeholders, correction)
+document.querySelectorAll(".disclose-btn").forEach(btn => {
+  const region = document.getElementById(btn.dataset.target);
+  btn.addEventListener("click", () => toggleRegion(btn, region));
+});
+
+// ── Copy drafted action (no send) ─────────────────────────────────────────────
+const copyBtn = document.getElementById("copy-btn");
+copyBtn.addEventListener("click", async () => {
+  const text = document.getElementById("draft-text").innerText;
+  try {
+    await navigator.clipboard.writeText(text);
+    const prev = copyBtn.textContent;
+    copyBtn.textContent = "Copied";
+    setTimeout(() => { copyBtn.textContent = prev; }, 1400);
+  } catch (e) {
+    // graceful fallback: select the text so the user can copy manually
+    const r = document.createRange();
+    r.selectNodeContents(document.getElementById("draft-text"));
+    const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    copyBtn.textContent = "Press ⌘/Ctrl-C";
+  }
+});
+</script>
+</body>
+</html>

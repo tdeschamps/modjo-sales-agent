@@ -5,7 +5,7 @@ description: Tactical pre-meeting brief on one specific upcoming call — goal, 
 
 ## Data sources — provider-agnostic
 
-This skill is built for **your Modjo workspace**. It uses Modjo's calls, deals, accounts, contacts, emails, and AI agents directly via the Modjo MCP (`get_calls`, `get_deals`, `ask_anything_on_deal`, etc.). See `../../shared/data-sources.md` for the full Modjo operation map and `../../CONNECTORS.md` for setup. If your Modjo isn't connected yet, the skill falls back to CSV / paste-in — see `../../shared/csv-schemas.md`. **Modjo agents are discovered at runtime via `get_agents` with a search filter (e.g. 'MEDDPICC', 'coaching', 'next step'); never hard-code agent UUIDs — they vary across Modjo tenants. Use `crmId` verbatim from `get_deals` / `get_accounts` — never reconstruct prefixes. Modjo surfaces the underlying CRM's exact ID (Salesforce, HubSpot, Pipedrive, or whichever CRM the customer uses), and tenants commonly have multiple ID formats coexisting from sandboxes or merged instances. Single-question framings when calling agents — multi-part questions return empty.**
+This skill is built for **your Modjo workspace**. It uses Modjo's calls, deals, accounts, contacts, emails, and AI agents directly via the Modjo MCP (`get_calls`, `get_deals`, `ask_anything_on_deal`, etc.). See `${CLAUDE_PLUGIN_ROOT}/shared/data-sources.md` for the full Modjo operation map and `${CLAUDE_PLUGIN_ROOT}/CONNECTORS.md` for setup. If your Modjo isn't connected yet, the skill falls back to CSV / paste-in — see `${CLAUDE_PLUGIN_ROOT}/shared/csv-schemas.md`. **Modjo agents are discovered at runtime via `get_agents` with a search filter (e.g. 'MEDDPICC', 'coaching', 'next step'); never hard-code agent UUIDs — they vary across Modjo tenants. Use `crmId` verbatim from `get_deals` / `get_accounts` — never reconstruct prefixes. Modjo surfaces the underlying CRM's exact ID (Salesforce, HubSpot, Pipedrive, or whichever CRM the customer uses), and tenants commonly have multiple ID formats coexisting from sandboxes or merged instances. Single-question framings when calling agents — multi-part questions return empty.**
 
 
 You are the rep's pre-meeting brain. Your job is to make sure they walk into this specific call already knowing what the other side will say, what they want to land, and how they'll handle the predictable objections. Not a wall of text — a tactical brief.
@@ -26,12 +26,12 @@ If multiple deals exist on the account, I'll ask which one this meeting is about
 
 # Load before running
 
-- `../../shared/using-modjo-mcp.md` — how to use the Modjo MCP: agents for grounded quotes, `get_transcript` is last-resort-only
-- `../../shared/qualification-rubric.md` — pillar reference
-- `../../shared/coaching-themes.md` — to label gaps
-- `../../shared/icp-and-personas.md` — for persona pain language
-- `../../shared/output-modes.md` — Live brief default; optional Notion log if rep wants the brief persisted
-- `../../shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
+- `${CLAUDE_PLUGIN_ROOT}/shared/using-modjo-mcp.md` — how to use the Modjo MCP: agents for grounded quotes, `get_transcript` is last-resort-only
+- `${CLAUDE_PLUGIN_ROOT}/shared/qualification-rubric.md` — pillar reference
+- `${CLAUDE_PLUGIN_ROOT}/shared/coaching-themes.md` — to label gaps
+- `${CLAUDE_PLUGIN_ROOT}/shared/icp-and-personas.md` — for persona pain language
+- `${CLAUDE_PLUGIN_ROOT}/shared/output-modes.md` — Live brief default; optional Notion log if rep wants the brief persisted
+- `${CLAUDE_PLUGIN_ROOT}/shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
 
 # Data to pull
 
@@ -61,7 +61,7 @@ If multiple deals exist on the account, I'll ask which one this meeting is about
 
 9. **Carryover from prior context** — `workspace_search` (e.g. Notion `notion-search`) queries=`"[Account] flag"`, `"[Account] action"`, `"AE-AM Weekly"` to find recent manager notes, pipeline reviews, or coaching log entries that reference this account. If today's meeting was created in response to a flagged action, cite that origin.
 
-10. **Competitive context** — ask `ask_anything_on_call` / `ask_anything_on_deal`: "Was any competitor mentioned on these calls? If so, name them and quote the exact mention with timestamp." Use the agent, not raw transcript (see `../../shared/using-modjo-mcp.md`; `get_transcript` is last-resort-only). **If the agent surfaces no competitor mention, say "no competitor evidence in calls — flag if you know one is in play." Do NOT invent a competitor or a competitive objection because deals at this stage usually face one** — that is a fabrication. Cross-reference the team battlecard via Notion only if a competitor was actually named (`workspace_search` (e.g. Notion `notion-search`) query=`"[competitor] battlecard"`).
+10. **Competitive context** — ask `ask_anything_on_call` / `ask_anything_on_deal`: "Was any competitor mentioned on these calls? If so, name them and quote the exact mention with timestamp." Use the agent, not raw transcript (see `${CLAUDE_PLUGIN_ROOT}/shared/using-modjo-mcp.md`; `get_transcript` is last-resort-only). **If the agent surfaces no competitor mention, say "no competitor evidence in calls — flag if you know one is in play." Do NOT invent a competitor or a competitive objection because deals at this stage usually face one** — that is a fabrication. Cross-reference the team battlecard via Notion only if a competitor was actually named (`workspace_search` (e.g. Notion `notion-search`) query=`"[competitor] battlecard"`).
 
 11. **Calendar data quality check** — if the event title contains in-person keywords ("présentiel", "in-person", "office", "on-site") but the location is a video conference link (meet.google.com, zoom, teams), flag the contradiction in the brief: "Title says in-person but calendar has a Meet link — confirm physical location with the rep." Don't assume one or the other.
 
@@ -97,7 +97,7 @@ One specific opening sentence the rep should use. References real prior context,
 Ranked list of 3–5 things this meeting needs to surface. Each tied to a MEDDPICC gap or buyer concern.
 
 ### Expected objections + responses
-**Every expected objection must trace to THIS account's/contact's own prior calls** — name the call + speaker + the moment it was raised. Scope your evidence to the target account (filter by its `accountId`/`crmId`); never borrow an objection raised by a different contact on a different account because it's thematically similar (see `../../shared/using-modjo-mcp.md` → Evidence scoping). For each grounded objection (pricing, timing, status quo, security, etc.): the rep's drafted response. If you genuinely have no call evidence for a category, either omit it or label it "no prior-call evidence — anticipated from segment, verify." Do not present segment-stereotype objections as if this buyer raised them. Pull team battlecard if available for grounded objections; never invent one to fill the card.
+**Every expected objection must trace to THIS account's/contact's own prior calls** — name the call + speaker + the moment it was raised. Scope your evidence to the target account (filter by its `accountId`/`crmId`); never borrow an objection raised by a different contact on a different account because it's thematically similar (see `${CLAUDE_PLUGIN_ROOT}/shared/using-modjo-mcp.md` → Evidence scoping). For each grounded objection (pricing, timing, status quo, security, etc.): the rep's drafted response. If you genuinely have no call evidence for a category, either omit it or label it "no prior-call evidence — anticipated from segment, verify." Do not present segment-stereotype objections as if this buyer raised them. Pull team battlecard if available for grounded objections; never invent one to fill the card.
 
 ### Next step we want to book
 The exact calendar invite or commitment to land before the call ends. Including the proposed time/date.

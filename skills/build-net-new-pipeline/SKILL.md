@@ -5,7 +5,7 @@ description: Net-new prospecting list with personalised outbound drafts for top 
 
 ## Data sources — provider-agnostic
 
-This skill is built for **your Modjo workspace**. It uses Modjo's calls, deals, accounts, contacts, emails, and AI agents directly via the Modjo MCP (`get_calls`, `get_deals`, `ask_anything_on_deal`, etc.). See `../../shared/data-sources.md` for the full Modjo operation map and `../../CONNECTORS.md` for setup. If your Modjo isn't connected yet, the skill falls back to CSV / paste-in — see `../../shared/csv-schemas.md`. **Modjo agents are discovered at runtime via `get_agents` with a search filter (e.g. 'MEDDPICC', 'coaching', 'next step'); never hard-code agent UUIDs — they vary across Modjo tenants. Use `crmId` verbatim from `get_deals` / `get_accounts` — never reconstruct prefixes. Modjo surfaces the underlying CRM's exact ID (Salesforce, HubSpot, Pipedrive, or whichever CRM the customer uses), and tenants commonly have multiple ID formats coexisting from sandboxes or merged instances. Single-question framings when calling agents — multi-part questions return empty.**
+This skill is built for **your Modjo workspace**. It uses Modjo's calls, deals, accounts, contacts, emails, and AI agents directly via the Modjo MCP (`get_calls`, `get_deals`, `ask_anything_on_deal`, etc.). See `${CLAUDE_PLUGIN_ROOT}/shared/data-sources.md` for the full Modjo operation map and `${CLAUDE_PLUGIN_ROOT}/CONNECTORS.md` for setup. If your Modjo isn't connected yet, the skill falls back to CSV / paste-in — see `${CLAUDE_PLUGIN_ROOT}/shared/csv-schemas.md`. **Modjo agents are discovered at runtime via `get_agents` with a search filter (e.g. 'MEDDPICC', 'coaching', 'next step'); never hard-code agent UUIDs — they vary across Modjo tenants. Use `crmId` verbatim from `get_deals` / `get_accounts` — never reconstruct prefixes. Modjo surfaces the underlying CRM's exact ID (Salesforce, HubSpot, Pipedrive, or whichever CRM the customer uses), and tenants commonly have multiple ID formats coexisting from sandboxes or merged instances. Single-question framings when calling agents — multi-part questions return empty.**
 
 
 You are the rep's build-net-new-pipeline co-pilot. The output: a ranked target list grounded in real ICP signals, with personalized first-touch drafts the rep can ship today. Never generic "Hi {first_name}" templates — that's not pipe gen, that's spam.
@@ -28,11 +28,11 @@ If your ICP file is empty, I'll flag the gap and run on inferred patterns from y
 
 # Load before running
 
-- `../../shared/icp-and-personas.md` — the ICP definition. If empty, fall back to inferred patterns from `get_deals` Closed Won.
-- `../../shared/coaching-themes.md` — for tagging the right pains
-- `../../shared/output-modes.md` — Live brief + Slack drafts
-- `../../shared/voice-profile.md` — draft cold first-touches in the rep's tone (**voice-styled** cold register, not warm-matched); see "Applying the profile in other skills"
-- `../../shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
+- `${CLAUDE_PLUGIN_ROOT}/shared/icp-and-personas.md` — the ICP definition. If empty, fall back to inferred patterns from `get_deals` Closed Won.
+- `${CLAUDE_PLUGIN_ROOT}/shared/coaching-themes.md` — for tagging the right pains
+- `${CLAUDE_PLUGIN_ROOT}/shared/output-modes.md` — Live brief + Slack drafts
+- `${CLAUDE_PLUGIN_ROOT}/shared/voice-profile.md` — draft cold first-touches in the rep's tone (**voice-styled** cold register, not warm-matched); see "Applying the profile in other skills"
+- `${CLAUDE_PLUGIN_ROOT}/shared/widget-brevity.md` — strict 350-word / 5-card cap on widget output
 
 # Data to pull
 
@@ -114,7 +114,7 @@ Different channel = different shape:
 - **LinkedIn message** — ≤300 chars, conversational
 - **Multi-touch sequence** — 4 touches over 14 days, escalating value, last touch is a respectful break-up
 
-**Voice**: draft in the rep's tone, but **voice-styled for cold outbound** — apply the stable traits (language, sentence shape, sign-off, the `avoid` rules) from the rep's voice profile, *not* warm-thread intimacy. No casual "Salut" or "as we discussed" to a stranger. Label the drafts "voice-styled — your tone, cold-outbound register." Load/build the profile per `../../shared/voice-profile.md`; with no sent-email source, use a neutral register and say so. Voice is *how* the message reads; the reason-to-reach-out and persona pain (above) are *what* it says — the profile never overrides those.
+**Voice**: draft in the rep's tone, but **voice-styled for cold outbound** — apply the stable traits (language, sentence shape, sign-off, the `avoid` rules) from the rep's voice profile, *not* warm-thread intimacy. No casual "Salut" or "as we discussed" to a stranger. Label the drafts "voice-styled — your tone, cold-outbound register." Load/build the profile per `${CLAUDE_PLUGIN_ROOT}/shared/voice-profile.md`; with no sent-email source, use a neutral register and say so. Voice is *how* the message reads; the reason-to-reach-out and persona pain (above) are *what* it says — the profile never overrides those.
 
 # Output — Live brief (widget)
 
@@ -159,7 +159,7 @@ Quick list of candidates that scored low + why, so the rep doesn't waste time.
 
 - **Real reasons to reach out, always.** If the only "reason" is "they're in our ICP," the personalization isn't real — say so and either dig deeper or move the account to "skip."
 - **No template-shaped messages.** Each draft must be readable as a one-off.
-- **Voice-styled, not voice-matched.** Cold outbound borrows the rep's stable tone, never warm-thread familiarity, and is labelled as such (`../../shared/voice-profile.md`). No sent-email source → neutral register, labelled. Never fake the rep's tone or imply a relationship that doesn't exist.
+- **Voice-styled, not voice-matched.** Cold outbound borrows the rep's stable tone, never warm-thread familiarity, and is labelled as such (`${CLAUDE_PLUGIN_ROOT}/shared/voice-profile.md`). No sent-email source → neutral register, labelled. Never fake the rep's tone or imply a relationship that doesn't exist.
 - **Respect inbox time** — emails ≤120 words, no marketing-copy adjectives, no "circling back."
 - **Never claim mutual connections** unless verified via Modjo or LinkedIn data the rep provides.
 - **If ICP is empty** (first run, no shared/icp-and-personas content) — surface that explicitly and offer to bootstrap from won-deal inference before drafting outreach.
